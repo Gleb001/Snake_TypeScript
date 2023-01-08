@@ -1,0 +1,88 @@
+
+/* main ======================================================== */
+
+/* settings game */
+.settings_game__container {
+
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+/* name game */
+#game_name {
+
+    font-size: 2.5em;
+    font-weight: 400;
+
+}
+
+/* container setting */
+.container_setting {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.icon_setting {
+    border-radius: 50%;
+    border: 2px solid #16481E;
+    background-color: #5BDA6F;
+    display: inline-block;
+    margin-right: 10px;
+    height: 35px;
+    width: 35px;
+}
+
+.setting_name {
+    display: inline-block;
+}
+
+.field_input {
+    background-color: #5BDA6F;
+    text-align: center;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    outline: none;
+    color: #16481E;
+    font-size: 1em;
+    margin-left: 5px;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.container_setting input {
+    display: inline;
+    width: 55px;
+}
+
+.field_input:focus {
+    border: 2px solid #16481E;
+}
+
+#start_game_button {
+
+    font-size: 1em;
+    color: #16481E;
+
+    background-color: #5BDA6F;
+    border: 2px solid #16481E;
+    border-radius: 15px;
+
+    box-sizing: border-box;
+    padding: 10px 30px;
+
+    transition: background-color .3s linear;
+}
+
+#start_game_button:hover {
+    transition: color .3s linear;
+    background-color: #16481E;
+    color: #5BDA6F;
+    cursor: pointer;
+}
+
+/* media ======================================================= */
