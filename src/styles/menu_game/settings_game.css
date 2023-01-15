@@ -1,7 +1,7 @@
 
 /* main ======================================================== */
 
-/* settings game */
+/* settings game container ------------------------------------- */
 .settings_game__container {
 
     height: 100%;
@@ -12,46 +12,23 @@
 
 }
 
-/* name game */
+/* game name --------------------------------------------------- */
 #game_name {
-
     font-size: 2.5em;
     font-weight: 400;
-
 }
+
+/* settings game ----------------------------------------------- */
 
 /* container setting */
 .container_setting {
-    margin: 5px 0;
+    margin: 10px 0;
     display: flex;
     align-items: center;
 }
 
-.icon_setting {
-    border-radius: 50%;
-    border: 2px solid #16481E;
-    background-color: #5BDA6F;
-    display: inline-block;
+.container_setting span {
     margin-right: 10px;
-    height: 35px;
-    width: 35px;
-}
-
-.setting_name {
-    display: inline-block;
-}
-
-.field_input {
-    background-color: #5BDA6F;
-    text-align: center;
-    border: 2px solid transparent;
-    border-radius: 10px;
-    outline: none;
-    color: #16481E;
-    font-size: 1em;
-    margin-left: 5px;
-    box-sizing: border-box;
-    padding: 5px;
 }
 
 .container_setting input {
@@ -59,11 +36,73 @@
     width: 55px;
 }
 
+/* icon setting */
+.icon_setting {
+
+    display: inline-block;
+    margin-right: 15px;
+
+    height: 50px;
+    width: 50px;
+
+    text-align: center;
+
+    border-radius: 50%;
+    border: 2px solid #16481E;
+    background-color: #5BDA6F;
+
+    cursor: pointer;
+
+    transition: background-color .3s linear;
+
+}
+
+.icon_setting:hover {
+    transition: background-color .1s linear, color .3s linear;
+    background-color: #16481E;
+    color: #5BDA6F;
+}
+
+.icon_setting img {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 30%;
+}
+
+/* setting name */
+.setting_name {
+    display: inline-block;
+}
+
+/* field input */
+.field_input {
+
+    margin-left: 5px;
+
+    font-size: 1em;
+    text-align: center;
+    color: #16481E;
+
+    background-color: #5BDA6F;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    outline: none;
+
+    box-sizing: border-box;
+    padding: 5px;
+
+}
+
 .field_input:focus {
     border: 2px solid #16481E;
 }
 
+/* start game button ------------------------------------------- */
 #start_game_button {
+
+    width: 180px;
+    height: 50px;
 
     font-size: 1em;
     color: #16481E;
@@ -76,13 +115,14 @@
     padding: 10px 30px;
 
     transition: background-color .3s linear;
+
+    cursor: pointer;
 }
 
 #start_game_button:hover {
     transition: color .3s linear;
     background-color: #16481E;
     color: #5BDA6F;
-    cursor: pointer;
 }
 
 /* media ======================================================= */

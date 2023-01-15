@@ -2,7 +2,7 @@
 // imports ===================================================== //
 
 // utility ----------------------------------------------------- //
-import createElementHTML from "../utility/work_with_html.js"
+import createElementHTML from "../../utility/work_with_html.js";
 
 // main ======================================================== //
 
@@ -10,10 +10,19 @@ import createElementHTML from "../utility/work_with_html.js"
 const play_field = {
 
     // html ---------------------------------------------------- //
-    HTML: createElementHTML({
-        tag_name: "table",
-        attributes: { id: "play_field", },
-    }),
+    HTML: createElementHTML( "table", { id: "play_field" }, ),
+
+    // general settings ---------------------------------------- //
+    GENERAL_SETTINGS: {
+        size_cell: {
+            current: "medium",
+            list: {
+                small: 0.05,
+                medium: 0.04,
+                huge: 0.03,
+            } as { [name: string]: number }
+        },
+    },
 
     // get inner html value ------------------------------------ //
     get inner_html(): string {
@@ -22,13 +31,13 @@ const play_field = {
         let play_field__container = document.querySelector(
             ".play_field__container"
         ) as HTMLElement;
-        if(!play_field__container) return "";
+        if (!play_field__container) return "";
         let size_cell = this.size_cell;
 
         let number_line_cells = Math.trunc(
             play_field__container.offsetWidth / size_cell
         );
-        let number_columns_cells =  Math.trunc(
+        let number_columns_cells = Math.trunc(
             play_field__container.offsetHeight / size_cell
         );
 
@@ -59,17 +68,19 @@ const play_field = {
         let play_field__container = document.querySelector(
             ".play_field__container"
         ) as HTMLElement;
-        if(!play_field__container) return 0;
+        if (!play_field__container) return 0;
         let width_screen = play_field__container.clientWidth;
         let height_screen = play_field__container.clientHeight;
 
         let main_side = width_screen;
         if (main_side < height_screen) main_side = height_screen;
-        let size_cell = main_side * 0.04;
+        let size_cell = main_side * this.GENERAL_SETTINGS.size_cell.list[
+            this.GENERAL_SETTINGS.size_cell.current
+        ];
 
-        if(size_cell < 30) {
+        if (size_cell < 30) {
             size_cell = 30;
-        } else if(size_cell > 60) {
+        } else if (size_cell > 60) {
             size_cell = 60;
         }
 

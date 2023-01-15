@@ -5,20 +5,26 @@ const miniSyncEngine = {
             this.list[name] = { components, trigger, name_next };
         },
         get name_initial() {
-            let checking_algorithm = [];
-            let referenced_algorithm = [];
-            for (let algorithm in this.list) {
-                let name_next = this.list[algorithm].name_next;
-                let index_next_alg_check_alg = checking_algorithm.indexOf(name_next);
-                referenced_algorithm.push(name_next);
-                if (referenced_algorithm.indexOf(algorithm) == -1) {
-                    checking_algorithm.push(algorithm);
+            let list_algorithms = this.list;
+            let checking_algorithms = [];
+            let referenced_algorithms = [];
+            for (let algorithm in list_algorithms) {
+                let name_next = list_algorithms[algorithm].name_next;
+                let index_next_alg = checking_algorithms.indexOf(name_next);
+                referenced_algorithms.push(name_next);
+                if (referenced_algorithms.indexOf(algorithm) == -1) {
+                    checking_algorithms.push(algorithm);
                 }
-                else if (index_next_alg_check_alg != -1) {
-                    checking_algorithm.splice(index_next_alg_check_alg, 1);
+                else if (index_next_alg != -1) {
+                    checking_algorithms.splice(index_next_alg, 1);
                 }
             }
-            return checking_algorithm[0];
+            if (checking_algorithms.length == 0) {
+                return Object.keys(list_algorithms)[0];
+            }
+            else {
+                return checking_algorithms[0];
+            }
         },
         current: {
             index_component: 0,

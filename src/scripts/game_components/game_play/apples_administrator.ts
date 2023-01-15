@@ -2,6 +2,7 @@
 // imports ===================================================== //
 
 // elements ---------------------------------------------------- //
+import createElementHTML from "../../utility/work_with_html.js";
 import { snake_layer } from "./snake.js";
 
 // main ======================================================== //
@@ -10,11 +11,17 @@ import { snake_layer } from "./snake.js";
 const apple_administartor = {
 
     // html ---------------------------------------------------- //
-    HTML: document.getElementById("counter_apples") as HTMLElement,
+    HTML: createElementHTML(
+        "input",
+        {
+            id: "counter_apples",
+            value: "0",
+            disabled: "",
+        },
+    ),
 
     // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
-        speed: 500,
         color: "red",
         score: 0,
     },
@@ -25,19 +32,8 @@ const apple_administartor = {
         let color_apple = this.GENERAL_SETTINGS.color;
 
         for (let index = 0; index < quantity; index++) {
-
-            let apple_cell = snake_layer.getCell(
-                Math.floor(Math.random() * 25),
-                Math.floor(Math.random() * 25)
-            ) as HTMLElement;
-
-            if (
-                apple_cell.style.backgroundColor == "" ||
-                apple_cell.style.backgroundColor == "transparent"
-            ) {
-                apple_cell.style.backgroundColor = color_apple;
-            } else index--;
-
+            let apple_cell = snake_layer.getRandomCell("empty");
+            apple_cell.style.backgroundColor = color_apple;
         }
 
     },

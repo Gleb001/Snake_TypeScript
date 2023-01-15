@@ -33,8 +33,10 @@ const miniSyncEngine = {
         // getting the name of the initial algorithm
         get name_initial(): string {
 
-            let checking_algorithm: string[] = [];
-            let referenced_algorithm: string[] = [];
+            let list_algorithms = this.list;
+
+            let checking_algorithms: string[] = [];
+            let referenced_algorithms: string[] = [];
 
             // This loop checks the algorithm to see if there is
             // a link to it from other algorithm:
@@ -42,27 +44,30 @@ const miniSyncEngine = {
             // 2) If not, this is the initial algorithm (because
             // there is no link to it)
             // As a result , we get two arrays:
-            // *) checking_algorithm - which contains, presumably,
+            // *) checking_algorithms - which contains, presumably,
             // the initial algorithm
-            // *) referenced_algorithm - which contains links to
+            // *) referenced_algorithms - which contains links to
             // algorithm
-            for (let algorithm in this.list) {
+            for (let algorithm in list_algorithms) {
 
-                let name_next = this.list[algorithm].name_next;
+                let name_next = list_algorithms[algorithm].name_next;
 
-                let index_next_alg_check_alg = checking_algorithm.indexOf(name_next as string);
-                referenced_algorithm.push(name_next as string);
+                let index_next_alg = checking_algorithms.indexOf(name_next as string);
+                referenced_algorithms.push(name_next as string);
 
-                if (referenced_algorithm.indexOf(algorithm) == -1) {
-                    checking_algorithm.push(algorithm);
-                } else if (index_next_alg_check_alg != -1) {
-                    checking_algorithm.splice(index_next_alg_check_alg, 1);
+                if (referenced_algorithms.indexOf(algorithm) == -1) {
+                    checking_algorithms.push(algorithm);
+                } else if (index_next_alg != -1) {
+                    checking_algorithms.splice(index_next_alg, 1);
                 }
 
             }
 
-            // return the first algorithm that comes to hand
-            return checking_algorithm[0];
+            if(checking_algorithms.length == 0) {
+                return Object.keys(list_algorithms)[0];
+            } else {
+                return checking_algorithms[0];
+            }
 
         },
 

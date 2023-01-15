@@ -5,6 +5,7 @@
 @import url("./general/texts.css");
 @import url("./general/buttons.css");
 @import url("./general/colors.css");
+@import url("./general/animations.css");
 
 /* menu game --------------------------------------------------- */
 @import url("./menu_game/description_window.css");
@@ -35,6 +36,7 @@ body {
     margin: 0 auto;
 
     box-sizing: border-box;
+    padding: 20px 50px;
 
     display: flex;
     align-items: center;
@@ -49,5 +51,5 @@ body {
     .game_container { width: 1300px;  }
 }
 @media screen and (max-width: 1366px) {
-    .game_container { width: 100%;  padding: 0 50px;  }
+    .game_container { width: 100%; }
 }

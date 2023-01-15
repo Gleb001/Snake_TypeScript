@@ -25,100 +25,16 @@
         <div id="menu_game">
             <div class="settings_game__container">
                 <h1 id="game_name">Snake TypeScript</h1>
-                <div id="settings_game">
-                    <div class="container_setting">
-                        <div class="icon_setting"></div>
-                        <div class="setting_name">
-                            <span>
-                                Number rows:
-                                <input type="number" value="15" class="field_input">
-                            </span>
-                            <span>
-                                Number columns:
-                                <input type="number" value="15" class="field_input">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="container_setting">
-                        <div class="icon_setting"></div>
-                        <div class="setting_name">
-                            <span>
-                                Color snake:
-                                <input type="number" value="15" class="field_input">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="container_setting">
-                        <div class="icon_setting"></div>
-                        <div class="setting_name">
-                            <span>
-                                Level:
-                                <select style="text-align: left;" name="level_game" class="field_input">
-                                    <option value="easy">easy</option>
-                                    <option value="medium">medium</option>
-                                    <option value="hard">hard</option>
-                                    <option value="unreal">unreal</option>
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="container_setting">
-                        <div class="icon_setting"></div>
-                        <div class="setting_name">
-                            <span>
-                                Mode:
-                                <select style="text-align: left;" name="level_game" class="field_input">
-                                    <option value="easy">classic</option>
-                                    <option value="medium">no walls</option>
-                                    <option value="hard">obstacles</option>
-                                    <option value="unreal">complex</option>
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <div id="settings_game"></div>
                 <button id="start_game_button">start game</button>
             </div>
             <div id="description_window"></div>
         </div>
     </div>
 
-    <script>
-        window.addEventListener("load", () => {
+    <script type="module" src="./dist/main.js"></script>
 
-            let inputs = document.querySelectorAll(".field_input");
-
-            inputs.forEach(input => {
-                if (input.tagName != "INPUT") return;
-                input.addEventListener("keydown", (event) => {
-
-                    if (
-                        event.which != 8 && event.which != 0 &&
-                        event.which < 48 ||  event.which > 57
-                    ) event.preventDefault();
-
-                });
-            });
-
-        });
-
-        let start_button = document.getElementById("start_game_button");
-        start_button.addEventListener("click", (event) => {
-            let script_game = document.createElement("script");
-            script_game.src = "./dist/main.js";
-            script_game.type = "module";
-            document.body.append(script_game);
-            console.log("success");
-        });
-
-    </script>
-
-</body>
-
-</html>
-
-
-<!-- <div class="game_container">
+    <!-- <div class="game_container">
         <div class="state_game__container">
             <div class="score_player">
                 <input id="counter_apples" value="0" disabled>
@@ -126,4 +42,46 @@
         </div>
         <div class="play_field__container"></div>
         <span class="author_game">© Lichagin Gleb</span> -->
-<!-- </div> -->
+    <!-- </div> -->
+
+    <!-- <div class="container_setting">
+        <div class="icon_setting">
+            <img src="./images/size_playing_field.svg">
+        </div>
+        <div class="setting_name">
+            Size cells:
+            <select style="text-align: left;" name="size_cells" class="field_input"
+                id="size_play_field_setting">
+            </select>
+        </div>
+    </div>
+    <div class="container_setting">
+        <div class="icon_setting">
+            <img src="./images/level_game.svg">
+        </div>
+        <div class="setting_name">
+            <span>
+                Level:
+                <select style="text-align: left;" name="level_game" class="field_input"
+                    id="level_game_setting">
+                </select>
+            </span>
+        </div>
+    </div>
+    <div class="container_setting">
+        <div class="icon_setting">
+            <img src="./images/question_icon.svg">
+        </div>
+        <div class="setting_name">
+            <span>
+                Mode:
+                <select style="text-align: left;" name="level_game" class="field_input"
+                    id="mode_game_setting">
+                </select>
+            </span>
+        </div>
+    </div> -->
+
+</body>
+
+</html>
