@@ -8,7 +8,6 @@ type motionVector = {
     coordinate: coordinateVector,
     shift_number: shiftNumber,
 }
-type modeGame = "classic" | "no_walls" | "obstacles"
 
 // imports ===================================================== //
 
@@ -18,7 +17,6 @@ import createElementHTML from "../../utility/work_with_html.js"
 // elements ---------------------------------------------------- //
 import play_field from "./play_field.js";
 import apple_administartor from "./apples_administrator.js";
-import modes_administrator from "./modes_administrator.js"
 
 // main ======================================================== //
 
@@ -26,17 +24,17 @@ import modes_administrator from "./modes_administrator.js"
 const snake = {
 
     // html ---------------------------------------------------- //
-    HTML: createElementHTML( "div", { id: "snake" }, ),
+    HTML: createElementHTML("div", { id: "snake" },),
 
     // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
         speed: {
-            current: "hard",
+            current: "normal",
             list: {
-                easy: 140,
-                medium: 100,
-                hard: 85,
-                unreal: 70,
+                low: 140,
+                normal: 100,
+                fast: 85,
+                "very fast": 70,
             } as { [name: string]: number }
         },
         coordinates: {
@@ -49,10 +47,8 @@ const snake = {
 
     // movement settings --------------------------------------- //
     MOVEMENT_SETTINGS: {
-        no_walls: false,
-        replay_previous_aciton: 0,
-        game_over: false,
         ID_interval: 0,
+        losing_colors: [] as string[],
         motion_vector: {
             coordinate: "x",
             shift_number: -1
@@ -91,62 +87,55 @@ const snake = {
     // start the snake movement -------------------------------- //
     move(): void {
 
-        // 1. update coordinate
+        // 1. get next cell
         let coordinate = this.MOVEMENT_SETTINGS.motion_vector.coordinate;
         let shift_number = this.MOVEMENT_SETTINGS.motion_vector.shift_number;
         this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] += shift_number;
 
-        // 2. check new end cell
-        let end_cell = snake_layer.getCell(
+        if(coordinate == "x" && snake_layer.GENERAL_SETTINGS.floating_limit) {
+            let value = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate];
+            let number_columns = snake_layer.HTML.querySelectorAll("tr:first-child td").length;
+            if(value > number_columns) {
+                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = 1;
+            }
+            if(value < 1) {
+                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = number_columns;
+            }
+        }
+        if(coordinate == "y" && snake_layer.GENERAL_SETTINGS.floating_limit) {
+            let value = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate];
+            let number_rows = snake_layer.HTML.querySelectorAll("tr").length;
+            if(value > number_rows) {
+                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = 1;
+            }
+            if(value < 1) {
+                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = number_rows;
+            }
+        }
+
+        let next_cell = snake_layer.getCell(
             this.GENERAL_SETTINGS.coordinates.end_cell.y,
             this.GENERAL_SETTINGS.coordinates.end_cell.x
-        ) as HTMLElement;
+        );
+        let color_next_cell = next_cell.style.backgroundColor;
 
-        if (
-            this.MOVEMENT_SETTINGS.no_walls &&
-            (end_cell == this.GENERAL_SETTINGS.cells[
-                this.GENERAL_SETTINGS.cells.length - 1
-            ])
-        ) {
-
-            let value;
-            switch (coordinate) {
-                case "x":
-                    value = 1;
-                    break;
-                case "y":
-                    value = this.HTML.querySelectorAll("tr").length;
-                    break;
-            }
-
-            this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = value;
-            end_cell = snake_layer.getCell(
-                this.GENERAL_SETTINGS.coordinates.end_cell.y,
-                this.GENERAL_SETTINGS.coordinates.end_cell.x
-            ) as HTMLElement;
-        }
-
-        switch (end_cell.style.backgroundColor) {
+        if (this.MOVEMENT_SETTINGS.losing_colors.indexOf(color_next_cell) != -1) {
             // new end cell == snake -> end game
-            case this.GENERAL_SETTINGS.color:
-            case "black":
-                this.MOVEMENT_SETTINGS.game_over = true;
-                clearInterval(this.MOVEMENT_SETTINGS.ID_interval);
-                break;
+            clearInterval(this.MOVEMENT_SETTINGS.ID_interval);
+            play_field.GENERAL_SETTINGS.status = "game_over";
+        } else if (color_next_cell == apple_administartor.GENERAL_SETTINGS.color) {
             // new end cell == apple -> create apple
-            case apple_administartor.GENERAL_SETTINGS.color:
-                apple_administartor.createApple(1);
-                apple_administartor.updateScore();
-                break;
+            apple_administartor.createApple(1);
+            apple_administartor.updateScore();
+        } else {
             // new end cell == ordinary cell -> clear start cell
-            default:
-                let start_cell = this.GENERAL_SETTINGS.cells[0] as HTMLElement;
-                start_cell.style.backgroundColor = "transparent";
-                this.GENERAL_SETTINGS.cells.shift();
+            let start_cell = this.GENERAL_SETTINGS.cells[0] as HTMLElement;
+            start_cell.style.backgroundColor = "transparent";
+            this.GENERAL_SETTINGS.cells.shift();
         }
 
-        end_cell.style.backgroundColor = this.GENERAL_SETTINGS.color;
-        this.GENERAL_SETTINGS.cells.push(end_cell as never);
+        next_cell.style.backgroundColor = this.GENERAL_SETTINGS.color;
+        this.GENERAL_SETTINGS.cells.push(next_cell as never);
 
     },
 
@@ -166,53 +155,36 @@ const snake_layer = {
 
     // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
-        mode: {
-            current: "classic" as string,
-            list: {
-                classic: function (): void {
-                },
-                no_walls: function (): void {
-                    snake.MOVEMENT_SETTINGS.no_walls = true;
-                },
-                obstacles: function (): void {
-
-                    let index = 3;
-
-                    modes_administrator.started_modes.push(setInterval(
-                        (): void => {
-
-                            let score_player = apple_administartor.GENERAL_SETTINGS.score;
-
-                            if (score_player == index) {
-                                let empty_cell = snake_layer.getRandomCell("empty");
-                                empty_cell.style.backgroundColor = "black";
-                                index += 3;
-                            }
-
-                        },
-                        snake.GENERAL_SETTINGS.speed.list[snake.GENERAL_SETTINGS.speed.current]
-                    ));
-
-                }
-            } as { [name: string]: (() => void) }
-        },
+        floating_limit: false,
     },
 
     // get position cell --------------------------------------- //
-    getCell(row: number, column: number): HTMLElement {
-
-        let number_rows = this.HTML.querySelectorAll("tr").length;
-        let number_columns = this.HTML.querySelectorAll("tr:first-child td").length;
-
-        if (row < 1) row = 1;
-        if (row > number_rows) row = number_rows;
-
-        if (column < 1) column = 1;
-        if (column > number_columns) column = number_columns;
+    getCell(row: number, column: number): HTMLTableCellElement {
 
         return this.HTML.querySelector(
-            `tr:nth-child(${row}) td:nth-child(${column})`
-        ) as HTMLElement;
+            `tr:nth-child(${
+                this.__getNumberOnRange(
+                    1, this.HTML.querySelectorAll("tr").length, row
+                )
+            }) td:nth-child(${
+                this.__getNumberOnRange(
+                    1, this.HTML.querySelectorAll("tr:first-child td").length, column
+                )
+            })`
+        ) as HTMLTableCellElement;
+
+    },
+
+    // get number on range ------------------------------------- //
+    __getNumberOnRange(
+        from_number: number,
+        to_number: number,
+        check_number: number
+    ): number {
+
+        if (check_number < from_number) check_number = from_number;
+        if (check_number > to_number) check_number = to_number;
+        return check_number;
 
     },
 
@@ -281,7 +253,7 @@ window.addEventListener("keydown", (event): void | undefined => {
     let current_coordinate = snake.MOVEMENT_SETTINGS.motion_vector.coordinate;
     if (
         current_coordinate == new_coordinate ||
-        snake.MOVEMENT_SETTINGS.game_over
+        play_field.GENERAL_SETTINGS.status == "game_over"
     ) return;
 
     // 3. set new coordinate and negative

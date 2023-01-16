@@ -12,19 +12,19 @@ type ComponentsOfAlgorithms = {
 
 // imports ===================================================== //
 
-// game components --------------------------------------------- //
+// abstractions ------------------------------------------------ //
+import modes_administrator from "../game_components/abstractions/modes_administrator.js";
+
+// elements ---------------------------------------------------- //
 import play_field from "../game_components/game_play/play_field.js";
 import { snake, snake_layer } from "../game_components/game_play/snake.js";
 import apple_administartor from "../game_components/game_play/apples_administrator.js";
+import settings_game from "../game_components/menu_game/settings_game.js";
 
 // utility ----------------------------------------------------- //
 import miniSyncEngine from "../utility/miniSyncEngine.js";
-import modes_administrator from "../game_components/game_play/modes_administrator.js";
-import settings_game from "../game_components/menu_game/settings_game.js";
 
 // main ======================================================== //
-let start_game = false; // no good practice!
-
 const components_of_algorithms = {
 
     add_settings_game: {
@@ -57,7 +57,7 @@ const components_of_algorithms = {
                     "menu_game"
                 ) as HTMLElement;
 
-                let duration_animation = 1000;
+                let duration_animation = 500;
                 miniSyncEngine.executionDelay((): void => {
 
                     menu_game.style.animation = `
@@ -77,10 +77,10 @@ const components_of_algorithms = {
                     "start_game_button"
                 ) as HTMLElement;
 
-                start_game = false;
-
                 start_game_button.addEventListener(
-                    "click", () => { start_game = true; }
+                    "click", () => {
+                        play_field.GENERAL_SETTINGS.status = "game_play";
+                    }
                 );
 
             },
@@ -162,9 +162,11 @@ const components_of_algorithms = {
             showSnake() {
                 snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
                 snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
-                snake.MOVEMENT_SETTINGS.game_over = false;
+                snake.MOVEMENT_SETTINGS.losing_colors = [
+                    snake.GENERAL_SETTINGS.color
+                ];
                 snake.GENERAL_SETTINGS.cells = [];
-                console.log(snake);
+                snake_layer.GENERAL_SETTINGS.floating_limit = false;
                 snake.draw();
             },
             // apple administrator ----------------------------- //
@@ -173,15 +175,13 @@ const components_of_algorithms = {
             },
             // snake layer ------------------------------------- //
             startMode() {
-                snake_layer.GENERAL_SETTINGS.mode.list[
-                    snake_layer.GENERAL_SETTINGS.mode.current
+                modes_administrator.GENERAL_SETTINGS.mode.list[
+                    modes_administrator.GENERAL_SETTINGS.mode.current
                 ]();
             },
         },
         trigger() {
-            if(start_game) {
-                return start_game;
-            }
+            return play_field.GENERAL_SETTINGS.status == "game_play";
         },
         name_next: "end_game",
     },
@@ -202,7 +202,7 @@ const components_of_algorithms = {
                 ) as HTMLElement;
 
                 // 2. hide containers
-                let duration_animation = 1000;
+                let duration_animation = 500;
                 miniSyncEngine.executionDelay((): void => {
 
                     state_game__container.style.animation =
@@ -220,7 +220,7 @@ const components_of_algorithms = {
             },
         },
         trigger() {
-            return snake.MOVEMENT_SETTINGS.game_over;
+            return play_field.GENERAL_SETTINGS.status == "game_over";
         },
         name_next: "add_settings_game"
     },

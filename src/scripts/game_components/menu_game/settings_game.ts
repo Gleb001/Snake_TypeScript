@@ -16,7 +16,8 @@ type settingsData = {
 
 // elements ---------------------------------------------------- //
 import play_field from "../game_play/play_field.js";
-import { snake, snake_layer } from "../game_play/snake.js";
+import { snake } from "../game_play/snake.js";
+import modes_administrator from "../abstractions/modes_administrator.js";
 
 // utility ----------------------------------------------------- //
 import createElementHTML from "../../utility/work_with_html.js";
@@ -34,14 +35,14 @@ const settings_game = {
             setting_parameters: play_field.GENERAL_SETTINGS.size_cell,
         },
         {
-            name: "Level game",
+            name: "Speed snake",
             img_url: "./images/level_game.svg",
             setting_parameters: snake.GENERAL_SETTINGS.speed,
         },
         {
-            name: "Mode game",
+            name: "Mode",
             img_url: "./images/question_icon.svg",
-            setting_parameters: snake_layer.GENERAL_SETTINGS.mode,
+            setting_parameters: modes_administrator.GENERAL_SETTINGS.mode,
         },
     ] as settingsData[],
 
