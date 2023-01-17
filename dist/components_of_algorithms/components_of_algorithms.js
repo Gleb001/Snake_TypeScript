@@ -36,7 +36,7 @@ const components_of_algorithms = {
             addEventClickForButtonStartGame() {
                 let start_game_button = document.getElementById("start_game_button");
                 start_game_button.addEventListener("click", () => {
-                    play_field.GENERAL_SETTINGS.status = "game_play";
+                    play_field.GENERAL_SETTINGS.status = "prepare_game";
                 });
             },
         },
@@ -95,16 +95,22 @@ const components_of_algorithms = {
                 snake.MOVEMENT_SETTINGS.losing_colors = current_mode.losing_colors;
                 current_mode.mode_func();
             },
+            enablePlayGame() {
+                play_field.GENERAL_SETTINGS.status = "game_play";
+            },
         },
         trigger() {
-            return play_field.GENERAL_SETTINGS.status == "game_play";
+            return play_field.GENERAL_SETTINGS.status == "prepare_game";
         },
         name_next: "end_game",
     },
     end_game: {
         components: {
             breakWorkModes() {
-                modes_administrator.breakWorkModes();
+                modes_administrator.breakWorkAsyncModes();
+            },
+            stopMovingSnake() {
+                clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
             },
             hideGamePlay() {
                 let state_game__container = document.querySelector(".state_game__container");

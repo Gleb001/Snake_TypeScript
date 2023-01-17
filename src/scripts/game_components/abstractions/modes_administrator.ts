@@ -25,7 +25,7 @@ import { snake, snake_layer } from "../game_play/snake.js";
 let modes_administrator = {
 
     // started_modes ------------------------------------------- //
-    started_modes: [] as number[],
+    started_async_modes: [] as number[],
 
     // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
@@ -56,7 +56,7 @@ let modes_administrator = {
                     mode_func() {
 
                         let index = 3;
-                        modes_administrator.started_modes.push(setInterval(
+                        modes_administrator.started_async_modes.push(setInterval(
                             (): void => {
 
                                 let score_player = apple_administartor.GENERAL_SETTINGS.score;
@@ -84,8 +84,8 @@ let modes_administrator = {
     },
 
     // clear modes --------------------------------------------- //
-    breakWorkModes() {
-        this.started_modes.forEach(mode => clearInterval(mode));
+    breakWorkAsyncModes() {
+        this.started_async_modes.forEach(mode => clearInterval(mode));
     },
 
 };

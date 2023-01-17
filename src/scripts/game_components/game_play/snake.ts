@@ -85,40 +85,21 @@ const snake = {
     },
 
     // start the snake movement -------------------------------- //
+    // move
     move(): void {
 
-        // 1. get next cell
-        let coordinate = this.MOVEMENT_SETTINGS.motion_vector.coordinate;
-        let shift_number = this.MOVEMENT_SETTINGS.motion_vector.shift_number;
-        this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] += shift_number;
+        // 1. check on game over status
+        if (play_field.GENERAL_SETTINGS.status == "game_over") return;
 
-        if(coordinate == "x" && snake_layer.GENERAL_SETTINGS.floating_limit) {
-            let value = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate];
-            let number_columns = snake_layer.HTML.querySelectorAll("tr:first-child td").length;
-            if(value > number_columns) {
-                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = 1;
-            }
-            if(value < 1) {
-                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = number_columns;
-            }
-        }
-        if(coordinate == "y" && snake_layer.GENERAL_SETTINGS.floating_limit) {
-            let value = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate];
-            let number_rows = snake_layer.HTML.querySelectorAll("tr").length;
-            if(value > number_rows) {
-                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = 1;
-            }
-            if(value < 1) {
-                this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = number_rows;
-            }
-        }
-
+        // 2. update end coordinate --> get next cell
+        this.__updateEndCoordinate();
         let next_cell = snake_layer.getCell(
             this.GENERAL_SETTINGS.coordinates.end_cell.y,
             this.GENERAL_SETTINGS.coordinates.end_cell.x
         );
-        let color_next_cell = next_cell.style.backgroundColor;
 
+        // 3. check color next cell
+        let color_next_cell = next_cell.style.backgroundColor;
         if (this.MOVEMENT_SETTINGS.losing_colors.indexOf(color_next_cell) != -1) {
             // new end cell == snake -> end game
             play_field.GENERAL_SETTINGS.status = "game_over";
@@ -135,19 +116,78 @@ const snake = {
             this.GENERAL_SETTINGS.cells.shift();
         }
 
+        // 4. change color next cell and push next cell in cell storage
         next_cell.style.backgroundColor = this.GENERAL_SETTINGS.color;
         this.GENERAL_SETTINGS.cells.push(next_cell as never);
+
+    },
+    // check coordinate
+    __updateEndCoordinate(): void {
+
+        // 1. get the necessary variables
+        let coordinate = this.MOVEMENT_SETTINGS.motion_vector.coordinate;
+        let shift_number = this.MOVEMENT_SETTINGS.motion_vector.shift_number;
+        let value_coordinate = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] + shift_number;
+
+        let finish_number;
+        switch (coordinate) {
+            case "x":
+                finish_number = snake_layer.HTML.querySelectorAll(
+                    "tr:first-child td"
+                ).length;
+                break;
+            case "y":
+                finish_number = snake_layer.HTML.querySelectorAll(
+                    "tr"
+                ).length;
+                break;
+        }
+
+        // 3. set end_cell coordinate
+        this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = getCoordinateOnRange(
+            1, finish_number, value_coordinate
+        );
+
+        // additional function --------------------------------- //
+        function getCoordinateOnRange(
+            start_number: number,
+            finish_number: number,
+            check_number: number
+        ): number {
+
+            let number_below_range = start_number;
+            let number_above_range = finish_number;
+            if (snake_layer.GENERAL_SETTINGS.floating_limit) {
+                number_below_range = finish_number;
+                number_above_range = start_number;
+            };
+
+            if (check_number < start_number) {
+                return number_below_range;
+            } else if (check_number > finish_number) {
+                return number_above_range;
+            } else {
+                return check_number;
+            }
+
+        }
 
     },
 
     // set default settings ------------------------------------ //
     setDefaultSettings(): void {
+
+        // moving settings
         snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
         snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
+
+        // general settings
         snake.GENERAL_SETTINGS.cells = [];
         snake.GENERAL_SETTINGS.coordinates.end_cell.y = 0;
         snake.GENERAL_SETTINGS.coordinates.end_cell.x = 0;
-    }
+    },
+
+
 
 }
 
@@ -172,14 +212,12 @@ const snake_layer = {
     getCell(row: number, column: number): HTMLTableCellElement {
 
         return this.HTML.querySelector(
-            `tr:nth-child(${
-                this.__getNumberOnRange(
-                    1, this.HTML.querySelectorAll("tr").length, row
-                )
-            }) td:nth-child(${
-                this.__getNumberOnRange(
-                    1, this.HTML.querySelectorAll("tr:first-child td").length, column
-                )
+            `tr:nth-child(${this.__getNumberOnRange(
+                1, this.HTML.querySelectorAll("tr").length, row
+            )
+            }) td:nth-child(${this.__getNumberOnRange(
+                1, this.HTML.querySelectorAll("tr:first-child td").length, column
+            )
             })`
         ) as HTMLTableCellElement;
 
@@ -240,10 +278,9 @@ window.addEventListener("keydown", (event): void | undefined => {
     // 1. get new coordinate and negative
     let new_coordinate = "";
     let new_shift_number = 1;
-
     switch (event.key) {
         case "ArrowUp":
-        case "w": 
+        case "w":
             new_coordinate = "y";
             new_shift_number = -1;
             break;
@@ -267,10 +304,7 @@ window.addEventListener("keydown", (event): void | undefined => {
 
     // 2. check new cooridnate and game over status
     let current_coordinate = snake.MOVEMENT_SETTINGS.motion_vector.coordinate;
-    if (
-        current_coordinate == new_coordinate ||
-        play_field.GENERAL_SETTINGS.status == "game_over"
-    ) return;
+    if (current_coordinate == new_coordinate) return;
 
     // 3. set new coordinate and negative
     snake.MOVEMENT_SETTINGS.motion_vector.coordinate = new_coordinate as coordinateVector;
@@ -278,6 +312,7 @@ window.addEventListener("keydown", (event): void | undefined => {
 
     // 4. launch snake move
     snake.move();
+
     clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
     snake.MOVEMENT_SETTINGS.ID_interval = setInterval(
         (): void => { snake.move(); },

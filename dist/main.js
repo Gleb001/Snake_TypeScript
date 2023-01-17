@@ -26,6 +26,7 @@ miniSyncEngine.algorithms.add({
     name: "end_game",
     name_next: "add_settings_game",
     components: [
+        components_of_algorithms.end_game.components.stopMovingSnake,
         components_of_algorithms.end_game.components.breakWorkModes,
         components_of_algorithms.end_game.components.hideGamePlay,
     ],

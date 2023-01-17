@@ -22,7 +22,7 @@ const play_field = {
                 huge: 0.03,
             } as { [name: string]: number }
         },
-        status: "game_over" as "game_play" | "game_over"
+        status: "game_over" as "game_play" | "game_over" | "prepare_game"
     },
 
     // get inner html value ------------------------------------ //

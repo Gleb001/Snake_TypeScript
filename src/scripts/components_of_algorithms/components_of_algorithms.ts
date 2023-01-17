@@ -79,7 +79,7 @@ const components_of_algorithms = {
 
                 start_game_button.addEventListener(
                     "click", () => {
-                        play_field.GENERAL_SETTINGS.status = "game_play";
+                        play_field.GENERAL_SETTINGS.status = "prepare_game";
                     }
                 );
 
@@ -185,9 +185,13 @@ const components_of_algorithms = {
                 current_mode.mode_func();
 
             },
+            // enable play game -------------------------------- //
+            enablePlayGame() {
+                play_field.GENERAL_SETTINGS.status = "game_play";
+            },
         },
         trigger() {
-            return play_field.GENERAL_SETTINGS.status == "game_play";
+            return play_field.GENERAL_SETTINGS.status == "prepare_game";
         },
         name_next: "end_game",
     },
@@ -195,7 +199,10 @@ const components_of_algorithms = {
     end_game: {
         components: {
             breakWorkModes() {
-                modes_administrator.breakWorkModes();
+                modes_administrator.breakWorkAsyncModes();
+            },
+            stopMovingSnake() {
+                clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
             },
             hideGamePlay() {
 
