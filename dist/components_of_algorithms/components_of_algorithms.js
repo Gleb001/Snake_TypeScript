@@ -80,21 +80,20 @@ const components_of_algorithms = {
                     }, duration_animation);
                 }, duration_animation);
             },
+            setDefaultSettingsForGame() {
+                snake.setDefaultSettings();
+                apple_administartor.GENERAL_SETTINGS.score = 0;
+            },
             showSnake() {
-                snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
-                snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
-                snake.MOVEMENT_SETTINGS.losing_colors = [
-                    snake.GENERAL_SETTINGS.color
-                ];
-                snake.GENERAL_SETTINGS.cells = [];
-                snake_layer.GENERAL_SETTINGS.floating_limit = false;
                 snake.draw();
             },
             createApplesOnPlayField() {
                 apple_administartor.createApple(3);
             },
             startMode() {
-                modes_administrator.GENERAL_SETTINGS.mode.list[modes_administrator.GENERAL_SETTINGS.mode.current]();
+                let current_mode = modes_administrator.GENERAL_SETTINGS.mode.list[modes_administrator.GENERAL_SETTINGS.mode.current];
+                snake.MOVEMENT_SETTINGS.losing_colors = current_mode.losing_colors;
+                current_mode.mode_func();
             },
         },
         trigger() {

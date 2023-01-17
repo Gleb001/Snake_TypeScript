@@ -159,14 +159,11 @@ const components_of_algorithms = {
 
             },
             // snake ------------------------------------------- //
+            setDefaultSettingsForGame() {
+                snake.setDefaultSettings();
+                apple_administartor.GENERAL_SETTINGS.score = 0;
+            },
             showSnake() {
-                snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
-                snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
-                snake.MOVEMENT_SETTINGS.losing_colors = [
-                    snake.GENERAL_SETTINGS.color
-                ];
-                snake.GENERAL_SETTINGS.cells = [];
-                snake_layer.GENERAL_SETTINGS.floating_limit = false;
                 snake.draw();
             },
             // apple administrator ----------------------------- //
@@ -175,9 +172,18 @@ const components_of_algorithms = {
             },
             // snake layer ------------------------------------- //
             startMode() {
-                modes_administrator.GENERAL_SETTINGS.mode.list[
+
+                // 1. get current mode
+                let current_mode = modes_administrator.GENERAL_SETTINGS.mode.list[
                     modes_administrator.GENERAL_SETTINGS.mode.current
-                ]();
+                ];
+
+                // 2. set losing colors for snake
+                snake.MOVEMENT_SETTINGS.losing_colors = current_mode.losing_colors;
+
+                // 3. start mode function
+                current_mode.mode_func();
+
             },
         },
         trigger() {

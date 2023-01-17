@@ -121,8 +121,9 @@ const snake = {
 
         if (this.MOVEMENT_SETTINGS.losing_colors.indexOf(color_next_cell) != -1) {
             // new end cell == snake -> end game
-            clearInterval(this.MOVEMENT_SETTINGS.ID_interval);
             play_field.GENERAL_SETTINGS.status = "game_over";
+            clearInterval(this.MOVEMENT_SETTINGS.ID_interval);
+            return;
         } else if (color_next_cell == apple_administartor.GENERAL_SETTINGS.color) {
             // new end cell == apple -> create apple
             apple_administartor.createApple(1);
@@ -138,6 +139,15 @@ const snake = {
         this.GENERAL_SETTINGS.cells.push(next_cell as never);
 
     },
+
+    // set default settings ------------------------------------ //
+    setDefaultSettings(): void {
+        snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
+        snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
+        snake.GENERAL_SETTINGS.cells = [];
+        snake.GENERAL_SETTINGS.coordinates.end_cell.y = 0;
+        snake.GENERAL_SETTINGS.coordinates.end_cell.x = 0;
+    }
 
 }
 
@@ -230,23 +240,29 @@ window.addEventListener("keydown", (event): void | undefined => {
     // 1. get new coordinate and negative
     let new_coordinate = "";
     let new_shift_number = 1;
+
     switch (event.key) {
         case "ArrowUp":
+        case "w": 
             new_coordinate = "y";
             new_shift_number = -1;
             break;
         case "ArrowDown":
+        case "s":
             new_coordinate = "y";
             new_shift_number = 1;
             break;
         case "ArrowRight":
+        case "d":
             new_coordinate = "x";
             new_shift_number = 1;
             break;
         case "ArrowLeft":
+        case "a":
             new_coordinate = "x";
             new_shift_number = -1;
             break;
+        default: return;
     }
 
     // 2. check new cooridnate and game over status

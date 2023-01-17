@@ -25,6 +25,7 @@ miniSyncEngine.algorithms.add({
     components: [
         components_of_algorithms.start_game.components.clearGameContainer,
         components_of_algorithms.start_game.components.createPlayFieldAndSnakeLayer,
+        components_of_algorithms.start_game.components.setDefaultSettingsForGame,
         components_of_algorithms.start_game.components.showSnake,
         components_of_algorithms.start_game.components.createApplesOnPlayField,
         components_of_algorithms.start_game.components.startMode,

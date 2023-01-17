@@ -4,7 +4,13 @@
 // types ------------------------------------------------------- //
 type Mode_GS = {
     current: string,
-    list: { [name: string]: (() => void) }
+    list: ListModes
+}
+type ListModes = {
+    [name: string]: {
+        losing_colors: string[],
+        mode_func: (() => void)
+    }
 }
 
 // imports ===================================================== //
@@ -26,42 +32,53 @@ let modes_administrator = {
         mode: {
             current: "classic",
             list: {
-                classic: function () {
-                    null;
-                }, // good!
-                "no walls": function () {
-                    snake_layer.GENERAL_SETTINGS.floating_limit = true;
-                },
-                obstacles: function () {
-
-                    // 1. change losing colors in snake movement settings
-                    let color_obstacle = "white";
-                    snake.MOVEMENT_SETTINGS.losing_colors = [
-                        color_obstacle,
+                classic: {
+                    losing_colors: [
                         snake.GENERAL_SETTINGS.color
-                    ];
+                    ] as string[],
+                    mode_func() {
+                        snake_layer.GENERAL_SETTINGS.floating_limit = false;
+                    }
+                },
+                "no walls": {
+                    losing_colors: [
+                        snake.GENERAL_SETTINGS.color
+                    ],
+                    mode_func() {
+                        snake_layer.GENERAL_SETTINGS.floating_limit = true;
+                    }
+                },
+                obstacles: {
+                    losing_colors: [
+                        "white",
+                        snake.GENERAL_SETTINGS.color
+                    ],
+                    mode_func() {
 
-                    // 2. add mode
-                    let index = 3;
-                    modes_administrator.started_modes.push(setInterval(
-                        (): void => {
+                        let index = 3;
+                        modes_administrator.started_modes.push(setInterval(
+                            (): void => {
 
-                            let score_player = apple_administartor.GENERAL_SETTINGS.score;
+                                let score_player = apple_administartor.GENERAL_SETTINGS.score;
 
-                            if (score_player == index) {
-                                let empty_cell = snake_layer.getRandomCell("empty");
-                                empty_cell.style.backgroundColor = color_obstacle;
-                                index += 3;
-                            }
+                                if (score_player == index) {
+                                    let empty_cell = snake_layer.getRandomCell("empty");
+                                    empty_cell.style.backgroundColor = "white";
+                                    index += 3;
+                                }
 
-                        }, 20
-                    ));
+                            }, 20
+                        ));
 
-                }, // good!
-                hippi: function () {
-                    snake.MOVEMENT_SETTINGS.losing_colors = [];
-                    snake_layer.GENERAL_SETTINGS.floating_limit = true;
-                }
+                    }
+                },
+                hippi: {
+                    losing_colors: [],
+                    mode_func() {
+                        apple_administartor.GENERAL_SETTINGS.score = 0;
+                        snake_layer.GENERAL_SETTINGS.floating_limit = true;
+                    }
+                },
             }
         } as Mode_GS
     },
