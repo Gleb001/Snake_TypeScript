@@ -1,7 +1,5 @@
 
 // typescripts entities ======================================== //
-
-// type -------------------------------------------------------- //
 type settingParameter = {
     current: string,
     list: { [name: string]: string | number | (() => void), },
@@ -23,8 +21,6 @@ import modes_administrator from "../abstractions/modes_administrator.js";
 import createElementHTML from "../../utility/work_with_html.js";
 
 // main ======================================================== //
-
-// game settings ----------------------------------------------- //
 const settings_game = {
 
     // settings data ------------------------------------------- //

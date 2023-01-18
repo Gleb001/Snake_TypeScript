@@ -1,18 +1,17 @@
 
+// typescript ================================================== //
+type sizeCellList = "small" | "medium" | "huge"
+
 // imports ===================================================== //
 
 // utility ----------------------------------------------------- //
 import createElementHTML from "../../utility/work_with_html.js";
 
 // main ======================================================== //
-
-// play field -------------------------------------------------- //
 const play_field = {
 
-    // html ---------------------------------------------------- //
     HTML: createElementHTML( "table", { id: "play_field" }, ),
 
-    // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
         size_cell: {
             current: "medium",
@@ -25,7 +24,6 @@ const play_field = {
         status: "game_over" as "game_play" | "game_over" | "prepare_game"
     },
 
-    // get inner html value ------------------------------------ //
     get inner_html(): string {
 
         // 1. set number cells on the sides playing field
@@ -63,7 +61,6 @@ const play_field = {
 
     },
 
-    // get size cell ------------------------------------------- //
     get size_cell(): number {
 
         let play_field__container = document.querySelector(

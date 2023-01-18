@@ -33,19 +33,36 @@ interface AnimaitonCSSParameters extends AnimaitonPattern {
     },
 }
 
-
 // main ======================================================== //
-
-// class animation js ------------------------------------------ //
 class AnimationJS {
 
-    // public properties and methods =========================== //
+    static TIMING_FUNCTIONS = {
+        ease: (time_fraction) => {
+            // y = sin (x * π/4)
+            return Math.sin(time_fraction * Math.PI / 4);
+        },
+        ease_in: (time_fraction) => {
+            // y = x^2
+            return Math.pow(time_fraction, 2);
+        },
+        ease_out: (time_fraction) => {
+            // y = √x
+            return Math.sqrt(time_fraction);
+        },
+        linear: (time_fraction) => {
+            // y = x
+            return time_fraction;
+        },
+        bounce_start: (time_fraction) => {
+            // y = 4 * x^3 - 3 * x^2
+            return (4 * Math.pow(time_fraction, 3)) - (3 * Math.pow(time_fraction, 2));
+        },
+        bounce_end: (time_fraction) => {
+            // y = -4 * x^3 + 5 * x^2
+            return (-4 * Math.pow(time_fraction, 3)) + (5 * Math.pow(time_fraction, 2));
+        },
+    } as { [name: string]: (time_fraction: number) => number }
 
-    // properties ---------------------------------------------- //
-    _ID_ANIMATION: number = 0
-    _animation_settings: AnimaitonJSParameters
-
-    // constructor --------------------------------------------- //
     constructor(animation_settings: AnimaitonJSParameters) {
 
         // 1. set default values for changing_props
@@ -67,7 +84,6 @@ class AnimationJS {
 
     }
 
-    // start --------------------------------------------------- //
     start(): void {
 
         // 1. getting variables
@@ -103,7 +119,6 @@ class AnimationJS {
 
     }
 
-    // end ----------------------------------------------------- //
     end(): void {
 
         window.cancelAnimationFrame(this._ID_ANIMATION);
@@ -116,39 +131,9 @@ class AnimationJS {
 
 
 
-    // private properties and methods ========================== //
+    _ID_ANIMATION: number = 0
+    _animation_settings: AnimaitonJSParameters
 
-    // timing functions ---------------------------------------- //
-    static TIMING_FUNCTIONS: {
-        [name: string]: (time_fraction: number) => number
-    } = {
-            ease: (time_fraction) => {
-                // y = sin (x * π/4)
-                return Math.sin(time_fraction * Math.PI / 4);
-            },
-            ease_in: (time_fraction) => {
-                // y = x^2
-                return Math.pow(time_fraction, 2);
-            },
-            ease_out: (time_fraction) => {
-                // y = √x
-                return Math.sqrt(time_fraction);
-            },
-            linear: (time_fraction) => {
-                // y = x
-                return time_fraction;
-            },
-            bounce_start: (time_fraction) => {
-                // y = 4 * x^3 - 3 * x^2
-                return (4 * Math.pow(time_fraction, 3)) - (3 * Math.pow(time_fraction, 2));
-            },
-            bounce_end: (time_fraction) => {
-                // y = -4 * x^3 + 5 * x^2
-                return (-4 * Math.pow(time_fraction, 3)) + (5 * Math.pow(time_fraction, 2));
-            },
-        }
-
-    // change each prop in order ------------------------------- //
     _changeEachPropertyInOrder(time_fraction: number): void {
         this._animation_settings.changing_properties.forEach(
             (property: ChangingProperty): void => {
@@ -158,7 +143,6 @@ class AnimationJS {
         );
     }
 
-    // calculate new value ------------------------------------- //
     _calculate(
         time_fraction: number, property: ChangingProperty
     ): number {
@@ -172,7 +156,6 @@ class AnimationJS {
 
     }
 
-    // draw ---------------------------------------------------- //
     _draw(
         replacement_value: number, property: ChangingProperty
     ): void {
@@ -191,85 +174,9 @@ class AnimationJS {
     }
 
 };
-
-// class animation css ----------------------------------------- //
 class AnimationCSS {
 
-    // public properties and methods =========================== //
-
-    // properties ---------------------------------------------- //
-    _ID_ANIMATION: number = 0
-    _animation_settings: AnimaitonCSSParameters
-    _animation_css_file: HTMLStyleElement | undefined
-
-    // constructor --------------------------------------------- //
-    constructor(animation_settings: AnimaitonCSSParameters) {
-
-        // 1. set default values for changing_props
-        animation_settings.changing_properties.forEach(
-            (prop: ChangingProperty) => {
-                if (typeof prop.unit_of_measurement != "string") {
-                    prop.unit_of_measurement = "";
-                }
-            }
-        );
-
-        // 2. set default values for delay
-        if (typeof animation_settings.timing_settings.delay != "number") {
-            animation_settings.timing_settings.delay = 0;
-        }
-
-        // 3. set animation settings for this
-        this._animation_settings = animation_settings;
-
-    }
-
-    // start --------------------------------------------------- //
-    start(): void {
-
-        // 1. add styles animation for changing element
-        this._addSpecStylesForChangingElements("start_value");
-
-        // 2. create animation css file
-        this._animation_css_file = AnimationCSS.createFile(
-            this._animation_settings.changing_properties,
-            this._animation_settings.name
-        );
-
-        // 3. end animation
-        setTimeout(
-            (): void => this.end(),
-            this._animation_settings.timing_settings.duration
-        );
-
-    }
-
-    // end ----------------------------------------------------- //
-    end(): void {
-
-        // 1. remove css file
-        if (typeof this._animation_css_file != "undefined") {
-            this._animation_css_file.remove();
-        }
-
-        // 2. add spec styles for changing elements
-        this._addSpecStylesForChangingElements("end_value");
-
-        // 3. start next function
-        if (typeof this._animation_settings.next_function == "function") {
-            this._animation_settings.next_function();
-        }
-
-    }
-
-
-
-    // private properties and methods ========================== //
-
-    // index animation ----------------------------------------- //
     static INDEX_ANIMATION: number = 1
-
-    // get animation css file ---------------------------------- //
     static createFile(
         changing_properties: ChangingProperties,
         name_animation: string
@@ -322,8 +229,69 @@ class AnimationCSS {
 
     }
 
-    // add special styles for changing elements depend
-    // status animation (start or stop) ------------------------ //
+    constructor(animation_settings: AnimaitonCSSParameters) {
+
+        // 1. set default values for changing_props
+        animation_settings.changing_properties.forEach(
+            (prop: ChangingProperty) => {
+                if (typeof prop.unit_of_measurement != "string") {
+                    prop.unit_of_measurement = "";
+                }
+            }
+        );
+
+        // 2. set default values for delay
+        if (typeof animation_settings.timing_settings.delay != "number") {
+            animation_settings.timing_settings.delay = 0;
+        }
+
+        // 3. set animation settings for this
+        this._animation_settings = animation_settings;
+
+    }
+
+    start(): void {
+
+        // 1. add styles animation for changing element
+        this._addSpecStylesForChangingElements("start_value");
+
+        // 2. create animation css file
+        this._animation_css_file = AnimationCSS.createFile(
+            this._animation_settings.changing_properties,
+            this._animation_settings.name
+        );
+
+        // 3. end animation
+        setTimeout(
+            (): void => this.end(),
+            this._animation_settings.timing_settings.duration
+        );
+
+    }
+
+    end(): void {
+
+        // 1. remove css file
+        if (typeof this._animation_css_file != "undefined") {
+            this._animation_css_file.remove();
+        }
+
+        // 2. add spec styles for changing elements
+        this._addSpecStylesForChangingElements("end_value");
+
+        // 3. start next function
+        if (typeof this._animation_settings.next_function == "function") {
+            this._animation_settings.next_function();
+        }
+
+    }
+
+
+
+    _ID_ANIMATION: number = 0
+    _animation_settings: AnimaitonCSSParameters
+    _animation_css_file: HTMLStyleElement | undefined
+
     _addSpecStylesForChangingElements(
         value: "start_value" | "end_value"
     ): void {
@@ -364,7 +332,6 @@ class AnimationCSS {
     }
 
 };
-
 
 // export ====================================================== //
 export { AnimationCSS, AnimationJS };

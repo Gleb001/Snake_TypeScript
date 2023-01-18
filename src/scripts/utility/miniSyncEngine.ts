@@ -1,7 +1,5 @@
 
 // typescripts entities ======================================== //
-
-// types ------------------------------------------------------- //
 type Algorithm = {
     name_next?: string,
     components: (() => void)[],
@@ -11,26 +9,18 @@ type ListAlgorithms = { [name: string]: Algorithm }
 type StatusMiniSyncEngine = "algorithm_finished" | "work" | "pause"
 
 // main ======================================================== //
-
-// game engine ------------------------------------------------- //
 const miniSyncEngine = {
 
-    // methods of working with a synchronous game engine ======= //
-
-    // algorithms ---------------------------------------------- //
     algorithms: {
 
-        // work with the list ---------------------------------- //
         list: {} as ListAlgorithms,
 
-        // adding an algorithm to the list
         add({
             name, name_next, components, trigger
         }: Algorithm & { name: string }): void {
             this.list[name] = { components, trigger, name_next };
         },
 
-        // getting the name of the initial algorithm
         get name_initial(): string {
 
             let list_algorithms = this.list;
@@ -71,7 +61,6 @@ const miniSyncEngine = {
 
         },
 
-        // work with the current algorithm --------------------- //
         current: {
 
             index_component: 0,
@@ -87,11 +76,10 @@ const miniSyncEngine = {
 
     },
 
-    // start --------------------------------------------------- //
     start(): void {
 
         // 1. checking for status
-        if (this._status.get()) {  return; }
+        if (this._status.get()) return;
 
         // 2. set an initial algorithm similar to the current one
         this.algorithms.current.set(this.algorithms.name_initial);
@@ -102,7 +90,6 @@ const miniSyncEngine = {
 
     },
 
-    // execution delay ----------------------------------------- //
     executionDelay(
         async_function: () => void, duration_delay?: number
     ): void {
@@ -123,9 +110,6 @@ const miniSyncEngine = {
 
 
 
-    // the mechanism of operation of the synchronous engine ==== //
-
-    // status -------------------------------------------------- //
     _status: {
         _current: "",
         set(new_status: StatusMiniSyncEngine): void {
@@ -136,7 +120,6 @@ const miniSyncEngine = {
         },
     },
 
-    // launch trigger ------------------------------------------ //
     _launchTrigger(): void {
 
         // 1. set status work
@@ -156,7 +139,6 @@ const miniSyncEngine = {
 
     },
 
-    // launch algorithm ---------------------------------------- //
     _launchAlgorithm(): void {
 
         // 1. getting and checking the current algorithm
@@ -180,7 +162,6 @@ const miniSyncEngine = {
 
     },
 
-    // change algorithm ---------------------------------------- //
     _changeAlgorithm(): void {
 
         // 1. get name next algorithm
@@ -202,7 +183,6 @@ const miniSyncEngine = {
 
     },
 
-    // catching the end of the algorithm execution ------------- //
     _catchEndAlgorithm(): void {
 
         let id_interval = setInterval((): void => {

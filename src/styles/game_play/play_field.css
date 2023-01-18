@@ -17,10 +17,10 @@
 }
 
 #play_field td {
-    background-color: #16481E;
+    background-color: #3fbb54;
 }
 
 #play_field tr:nth-child(even) td:nth-child(odd),
 #play_field tr:nth-child(odd) td:nth-child(even) {
-    background-color: #5BDA6F;
+    background-color: #4ec760;
 }

@@ -1,12 +1,15 @@
 
 // typescript entities ========================================= //
-
-// types ------------------------------------------------------- //
 type coordinateVector = "x" | "y"
 type shiftNumber = -1 | 1
 type motionVector = {
     coordinate: coordinateVector,
     shift_number: shiftNumber,
+}
+type speedSnakeList = "low" | "normal" | "fast" | "very fast"
+type speedSanke = {
+    current: speedSnakeList,
+    list: { [name: string | speedSnakeList]: number },
 }
 
 // imports ===================================================== //
@@ -17,16 +20,13 @@ import createElementHTML from "../../utility/work_with_html.js"
 // elements ---------------------------------------------------- //
 import play_field from "./play_field.js";
 import apple_administartor from "./apples_administrator.js";
+import Range from "../../utility/work_with_range.js";
 
 // main ======================================================== //
-
-// snake ------------------------------------------------------- //
 const snake = {
 
-    // html ---------------------------------------------------- //
     HTML: createElementHTML("div", { id: "snake" },),
 
-    // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
         speed: {
             current: "normal",
@@ -35,27 +35,25 @@ const snake = {
                 normal: 100,
                 fast: 85,
                 "very fast": 70,
-            } as { [name: string]: number }
-        },
-        coordinates: {
-            start_cell: { x: 0, y: 0, },
-            end_cell: { x: 0, y: 0, },
-        },
-        color: "blue",
-        cells: [] as HTMLTableCellElement[],
+            },
+        } as speedSanke,
+        color: "rgb(53, 65, 181)",
     },
 
-    // movement settings --------------------------------------- //
-    MOVEMENT_SETTINGS: {
+    DYNAMIC_SETTINGS: {
         ID_interval: 0,
         losing_colors: [] as string[],
-        motion_vector: {
-            coordinate: "x",
-            shift_number: -1
-        } as motionVector,
+        motion_vector: { coordinate: "x", shift_number: -1 } as motionVector,
+        cells: {
+            list: [] as HTMLTableCellElement[],
+            floating_limit: false,
+            coordinates: {
+                start_cell: { x: 0, y: 0, },
+                end_cell: { x: 0, y: 0, },
+            },
+        }
     },
 
-    // display a snake on the playing field -------------------- //
     draw(): void {
 
         // 1. get y and x coordinates
@@ -64,8 +62,8 @@ const snake = {
         let x_coordinate = 4;
 
         // 2. set start cell
-        this.GENERAL_SETTINGS.coordinates.start_cell.x = x_coordinate;
-        this.GENERAL_SETTINGS.coordinates.start_cell.y = y_coordinate;
+        this.DYNAMIC_SETTINGS.cells.coordinates.start_cell.x = x_coordinate;
+        this.DYNAMIC_SETTINGS.cells.coordinates.start_cell.y = y_coordinate;
 
         // 3. draw all snake cells
         while (x_coordinate < 8) {
@@ -74,36 +72,38 @@ const snake = {
 
             let cell_snake = snake_layer.getCell(y_coordinate, x_coordinate);
             cell_snake.style.backgroundColor = this.GENERAL_SETTINGS.color;
-            this.GENERAL_SETTINGS.cells.push(cell_snake as never);
+            this.DYNAMIC_SETTINGS.cells.list.push(cell_snake as never);
 
         }
 
         // 4. set end cell
-        this.GENERAL_SETTINGS.coordinates.end_cell.y = y_coordinate;
-        this.GENERAL_SETTINGS.coordinates.end_cell.x = x_coordinate;
+        this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.y = y_coordinate;
+        this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.x = x_coordinate;
 
     },
 
-    // start the snake movement -------------------------------- //
-    // move
     move(): void {
 
         // 1. check on game over status
-        if (play_field.GENERAL_SETTINGS.status == "game_over") return;
+        if (play_field.GENERAL_SETTINGS.status != "game_play") {
+            clearInterval(snake.DYNAMIC_SETTINGS.ID_interval);
+        };
 
-        // 2. update end coordinate --> get next cell
-        this.__updateEndCoordinate();
+        // 2. update end coordinate
+        __updateEndCoordinate();
+
+        // 3. get next cell by new coordinate
         let next_cell = snake_layer.getCell(
-            this.GENERAL_SETTINGS.coordinates.end_cell.y,
-            this.GENERAL_SETTINGS.coordinates.end_cell.x
+            this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.y,
+            this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.x
         );
 
-        // 3. check color next cell
+        // 4. check color next cell
         let color_next_cell = next_cell.style.backgroundColor;
-        if (this.MOVEMENT_SETTINGS.losing_colors.indexOf(color_next_cell) != -1) {
+        console.log(color_next_cell);
+        if (this.DYNAMIC_SETTINGS.losing_colors.indexOf(color_next_cell) != -1) {
             // new end cell == snake -> end game
             play_field.GENERAL_SETTINGS.status = "game_over";
-            clearInterval(this.MOVEMENT_SETTINGS.ID_interval);
             return;
         } else if (color_next_cell == apple_administartor.GENERAL_SETTINGS.color) {
             // new end cell == apple -> create apple
@@ -111,90 +111,61 @@ const snake = {
             apple_administartor.updateScore();
         } else {
             // new end cell == ordinary cell -> clear start cell
-            let start_cell = this.GENERAL_SETTINGS.cells[0] as HTMLElement;
+            let start_cell = this.DYNAMIC_SETTINGS.cells.list[0] as HTMLElement;
             start_cell.style.backgroundColor = "transparent";
-            this.GENERAL_SETTINGS.cells.shift();
+            this.DYNAMIC_SETTINGS.cells.list.shift();
         }
 
-        // 4. change color next cell and push next cell in cell storage
+        // 5. change color next cell and push next cell in cell storage
         next_cell.style.backgroundColor = this.GENERAL_SETTINGS.color;
-        this.GENERAL_SETTINGS.cells.push(next_cell as never);
+        this.DYNAMIC_SETTINGS.cells.list.push(next_cell as never);
 
-    },
-    // check coordinate
-    __updateEndCoordinate(): void {
+        // additional functions -------------------------------- //
+        function __updateEndCoordinate(): void {
 
-        // 1. get the necessary variables
-        let coordinate = this.MOVEMENT_SETTINGS.motion_vector.coordinate;
-        let shift_number = this.MOVEMENT_SETTINGS.motion_vector.shift_number;
-        let value_coordinate = this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] + shift_number;
+            // 1. get value coordinate
+            let coordinate = snake.DYNAMIC_SETTINGS.motion_vector.coordinate;
+            let shift_number = snake.DYNAMIC_SETTINGS.motion_vector.shift_number;
+            let value_coordinate = snake.DYNAMIC_SETTINGS.cells.coordinates.end_cell[coordinate] + shift_number;
 
-        let finish_number;
-        switch (coordinate) {
-            case "x":
-                finish_number = snake_layer.HTML.querySelectorAll(
-                    "tr:first-child td"
-                ).length;
-                break;
-            case "y":
-                finish_number = snake_layer.HTML.querySelectorAll(
-                    "tr"
-                ).length;
-                break;
-        }
+            // 2. get numbers counted elements
+            let counted_elements;
+            if (coordinate == "x") counted_elements = "tr:first-child td";
+            else counted_elements = "tr";
 
-        // 3. set end_cell coordinate
-        this.GENERAL_SETTINGS.coordinates.end_cell[coordinate] = getCoordinateOnRange(
-            1, finish_number, value_coordinate
-        );
+            let number_counted_elements = snake_layer.HTML.querySelectorAll(counted_elements).length;
 
-        // additional function --------------------------------- //
-        function getCoordinateOnRange(
-            start_number: number,
-            finish_number: number,
-            check_number: number
-        ): number {
+            // 3. set the coordinate of the end cell using       //
+            // the range constant ------------------------------ //
+            snake.DYNAMIC_SETTINGS.cells.coordinates.end_cell[
+                coordinate
+            ] = Range.getNumberInRange({
+                start_number: 1,
+                finish_number: number_counted_elements,
+                check_number: value_coordinate,
+                floating_range: snake.DYNAMIC_SETTINGS.cells.floating_limit
+            });
 
-            let number_below_range = start_number;
-            let number_above_range = finish_number;
-            if (snake_layer.GENERAL_SETTINGS.floating_limit) {
-                number_below_range = finish_number;
-                number_above_range = start_number;
-            };
-
-            if (check_number < start_number) {
-                return number_below_range;
-            } else if (check_number > finish_number) {
-                return number_above_range;
-            } else {
-                return check_number;
-            }
-
-        }
+        };
 
     },
 
-    // set default settings ------------------------------------ //
-    setDefaultSettings(): void {
+    setDefaultMovementSettings(): void {
 
-        // moving settings
-        snake.MOVEMENT_SETTINGS.motion_vector.coordinate = "x";
-        snake.MOVEMENT_SETTINGS.motion_vector.shift_number = -1;
+        this.DYNAMIC_SETTINGS.losing_colors = [];
+        this.DYNAMIC_SETTINGS.motion_vector.coordinate = "x";
+        this.DYNAMIC_SETTINGS.motion_vector.shift_number = -1;
 
-        // general settings
-        snake.GENERAL_SETTINGS.cells = [];
-        snake.GENERAL_SETTINGS.coordinates.end_cell.y = 0;
-        snake.GENERAL_SETTINGS.coordinates.end_cell.x = 0;
+        this.DYNAMIC_SETTINGS.cells.list = [];
+        this.DYNAMIC_SETTINGS.cells.floating_limit = false;
+        this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.y = 0;
+        this.DYNAMIC_SETTINGS.cells.coordinates.end_cell.x = 0;
+
     },
-
-
 
 }
-
-// snake layer ------------------------------------------------- //
 const snake_layer = {
 
-    // html ---------------------------------------------------- //
     HTML: createElementHTML(
         "table",
         {
@@ -203,40 +174,31 @@ const snake_layer = {
         },
     ),
 
-    // general settings ---------------------------------------- //
-    GENERAL_SETTINGS: {
-        floating_limit: false,
-    },
-
-    // get position cell --------------------------------------- //
     getCell(row: number, column: number): HTMLTableCellElement {
 
         return this.HTML.querySelector(
-            `tr:nth-child(${this.__getNumberOnRange(
+            `tr:nth-child(${__getNumberOnRange(
                 1, this.HTML.querySelectorAll("tr").length, row
             )
-            }) td:nth-child(${this.__getNumberOnRange(
+            }) td:nth-child(${__getNumberOnRange(
                 1, this.HTML.querySelectorAll("tr:first-child td").length, column
             )
             })`
         ) as HTMLTableCellElement;
 
-    },
-
-    // get number on range ------------------------------------- //
-    __getNumberOnRange(
-        from_number: number,
-        to_number: number,
-        check_number: number
-    ): number {
-
-        if (check_number < from_number) check_number = from_number;
-        if (check_number > to_number) check_number = to_number;
-        return check_number;
+        // additional function -------------------------------- //
+        function __getNumberOnRange(
+            from_number: number,
+            to_number: number,
+            check_number: number
+        ): number {
+            if (check_number < from_number) check_number = from_number;
+            if (check_number > to_number) check_number = to_number;
+            return check_number;
+        }
 
     },
 
-    // get random cell ----------------------------------------- //
     getRandomCell(type_cell: "any" | "empty"): HTMLElement {
 
         // 1. initialisation need variables
@@ -303,18 +265,21 @@ window.addEventListener("keydown", (event): void | undefined => {
     }
 
     // 2. check new cooridnate and game over status
-    let current_coordinate = snake.MOVEMENT_SETTINGS.motion_vector.coordinate;
-    if (current_coordinate == new_coordinate) return;
+    let current_coordinate = snake.DYNAMIC_SETTINGS.motion_vector.coordinate;
+    if (
+        current_coordinate == new_coordinate ||
+        play_field.GENERAL_SETTINGS.status != "game_play"
+    ) return;
 
     // 3. set new coordinate and negative
-    snake.MOVEMENT_SETTINGS.motion_vector.coordinate = new_coordinate as coordinateVector;
-    snake.MOVEMENT_SETTINGS.motion_vector.shift_number = new_shift_number as shiftNumber;
+    snake.DYNAMIC_SETTINGS.motion_vector.coordinate = new_coordinate as coordinateVector;
+    snake.DYNAMIC_SETTINGS.motion_vector.shift_number = new_shift_number as shiftNumber;
 
     // 4. launch snake move
     snake.move();
 
-    clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
-    snake.MOVEMENT_SETTINGS.ID_interval = setInterval(
+    clearInterval(snake.DYNAMIC_SETTINGS.ID_interval);
+    snake.DYNAMIC_SETTINGS.ID_interval = setInterval(
         (): void => { snake.move(); },
         snake.GENERAL_SETTINGS.speed.list[snake.GENERAL_SETTINGS.speed.current]
     );

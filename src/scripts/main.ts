@@ -29,6 +29,7 @@ miniSyncEngine.algorithms.add({
         components_of_algorithms.start_game.components.showSnake,
         components_of_algorithms.start_game.components.createApplesOnPlayField,
         components_of_algorithms.start_game.components.startMode,
+        components_of_algorithms.start_game.components.enablePlayGame,
     ],
     trigger: components_of_algorithms.start_game.trigger,
 });

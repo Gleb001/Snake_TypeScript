@@ -81,8 +81,8 @@ const components_of_algorithms = {
                 }, duration_animation);
             },
             setDefaultSettingsForGame() {
-                snake.setDefaultSettings();
-                apple_administartor.GENERAL_SETTINGS.score = 0;
+                snake.setDefaultMovementSettings();
+                apple_administartor.DYNAMIC_SETTINGS.score = 0;
             },
             showSnake() {
                 snake.draw();
@@ -92,7 +92,7 @@ const components_of_algorithms = {
             },
             startMode() {
                 let current_mode = modes_administrator.GENERAL_SETTINGS.mode.list[modes_administrator.GENERAL_SETTINGS.mode.current];
-                snake.MOVEMENT_SETTINGS.losing_colors = current_mode.losing_colors;
+                snake.DYNAMIC_SETTINGS.losing_colors = current_mode.losing_colors;
                 current_mode.mode_func();
             },
             enablePlayGame() {
@@ -110,7 +110,7 @@ const components_of_algorithms = {
                 modes_administrator.breakWorkAsyncModes();
             },
             stopMovingSnake() {
-                clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
+                clearInterval(snake.DYNAMIC_SETTINGS.ID_interval);
             },
             hideGamePlay() {
                 let state_game__container = document.querySelector(".state_game__container");

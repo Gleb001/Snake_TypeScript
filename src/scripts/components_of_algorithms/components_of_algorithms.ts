@@ -1,7 +1,5 @@
 
 // typescript ================================================== //
-
-// types ------------------------------------------------------- //
 type ComponentsOfAlgorithms = {
     [name: string]: {
         components: { [name: string]: () => void },
@@ -160,8 +158,8 @@ const components_of_algorithms = {
             },
             // snake ------------------------------------------- //
             setDefaultSettingsForGame() {
-                snake.setDefaultSettings();
-                apple_administartor.GENERAL_SETTINGS.score = 0;
+                snake.setDefaultMovementSettings();
+                apple_administartor.DYNAMIC_SETTINGS.score = 0;
             },
             showSnake() {
                 snake.draw();
@@ -179,7 +177,7 @@ const components_of_algorithms = {
                 ];
 
                 // 2. set losing colors for snake
-                snake.MOVEMENT_SETTINGS.losing_colors = current_mode.losing_colors;
+                snake.DYNAMIC_SETTINGS.losing_colors = current_mode.losing_colors;
 
                 // 3. start mode function
                 current_mode.mode_func();
@@ -202,7 +200,7 @@ const components_of_algorithms = {
                 modes_administrator.breakWorkAsyncModes();
             },
             stopMovingSnake() {
-                clearInterval(snake.MOVEMENT_SETTINGS.ID_interval);
+                clearInterval(snake.DYNAMIC_SETTINGS.ID_interval);
             },
             hideGamePlay() {
 

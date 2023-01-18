@@ -7,10 +7,8 @@ import { snake_layer } from "./snake.js";
 
 // main ======================================================== //
 
-// apple administartor ----------------------------------------- //
 const apple_administartor = {
 
-    // html ---------------------------------------------------- //
     HTML: createElementHTML(
         "input",
         {
@@ -20,9 +18,11 @@ const apple_administartor = {
         },
     ),
 
-    // general settings ---------------------------------------- //
     GENERAL_SETTINGS: {
         color: "red",
+    },
+
+    DYNAMIC_SETTINGS: {
         score: 0,
     },
 
@@ -41,7 +41,7 @@ const apple_administartor = {
     // update value -------------------------------------------- //
     updateScore(): void {
         this.HTML.setAttribute(
-            "value", String(++this.GENERAL_SETTINGS.score)
+            "value", String(++this.DYNAMIC_SETTINGS.score)
         );
     },
 

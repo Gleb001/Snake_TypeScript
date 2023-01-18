@@ -38,9 +38,8 @@ const miniSyncEngine = {
         },
     },
     start() {
-        if (this._status.get()) {
+        if (this._status.get())
             return;
-        }
         this.algorithms.current.set(this.algorithms.name_initial);
         this._launchTrigger();
         this._catchEndAlgorithm();
