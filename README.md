@@ -1,2 +1,3 @@
 # Snake_TypeScript
-A game called "Snake" written in TypeScript
+
+[demo version game](https://gleb001.github.io/Snake_TypeScript/)
