@@ -1,0 +1,85 @@
+/* main ======================================================== */
+.settings_game__container {
+
+    display: flex;
+    align-items: center;
+
+    margin: 30px 0;
+    
+}
+.settings_game__wrapper {
+    width: 350px;
+    height: 120px;
+    overflow: hidden;
+}
+#settings_game {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    position: relative;
+    left: 0;
+
+}
+
+/* setting ----------------------------------------------------- */
+.setting {
+    margin: 5px 0;
+    display: inline-flex;
+    height: 50px;
+    width: 350px;
+    align-items: center;
+}
+
+/* icon setting ------------------------------------------------ */
+.icon_setting {
+
+    display: inline-block;
+    margin-right: 15px;
+
+    height: 45px;
+    width: 45px;
+
+    text-align: center;
+    font-size: 1.2em;
+    color: inherit;
+
+    border-radius: 50%;
+    border: 2px solid var(--dark-text-color);
+    background-color: var(--over-light-bg-color);
+
+    cursor: pointer;
+
+    transition: background-color .3s linear;
+
+}
+.icon_setting:hover,
+.icon_setting.hover {
+    transition: background-color .1s linear, color .3s linear;
+    background-color: var(--dark-text-color);
+    color: var(--over-light-bg-color);
+}
+
+/* field input ------------------------------------------------- */
+.setting_input {
+
+    margin-left: 15px;
+
+    font-size: 1em;
+    text-align: center;
+    color: var(--dark-text-color);
+    font-weight: 400;
+
+    background-color: var(--over-light-bg-color);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    outline: none;
+
+    box-sizing: border-box;
+    padding: 5px;
+
+}
+.setting_input:focus {
+    border: 2px solid var(--dark-text-color);
+}

@@ -1,0 +1,27 @@
+
+/* Open_Sans_Hebrew - latin */
+
+/* light */
+@font-face {
+    font-family: "Open Sans Hebrew";
+    font-style: normal;
+    font-weight: 300;
+    src: url('./fonts/Open_Sans_Hebrew/opensanshebrew-light.eot'); /* IE9 Compat Modes */
+    src: local(''),
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-light.woff2') format('woff2'), /* Super Modern Browsers */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-light.woff') format('woff'), /* Modern Browsers */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-light.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-light.svg') format('svg'); /* Legacy iOS */
+}
+/* regular */
+@font-face {
+    font-family: "Open Sans Hebrew";
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/Open_Sans_Hebrew/opensanshebrew-regular.eot'); /* IE9 Compat Modes */
+    src: local(''),
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-regular.woff') format('woff'), /* Modern Browsers */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('./fonts/Open_Sans_Hebrew/opensanshebrew-regular.svg') format('svg'); /* Legacy iOS */
+}

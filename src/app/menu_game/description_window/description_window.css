@@ -1,0 +1,123 @@
+/* main ======================================================== */
+#description_window {
+
+    flex: 0 1 60%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 20px;
+    border: 1px solid var(--dark-text-color);
+    background-color: var(--dark-text-color);
+
+    box-sizing: border-box;
+    padding: 15px;
+
+    overflow: hidden;
+
+    font-size: 16px;
+
+    position: relative;
+
+}
+#description_window span {
+
+    position: absolute;
+
+    color: var(--over-light-bg-color);
+    font-weight: 300;
+    font-size: 4em;
+
+}
+
+/* button clear description window ----------------------------- */
+#button_clear_description_window {
+
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    border-radius: 50%;
+    border: 1px solid var(--over-light-bg-color);
+    color: var(--over-light-bg-color);
+
+    background-color: var(--dark-text-color);
+
+    box-sizing: border-box;
+    padding: 20px 20px;
+
+    transition: background-color .15s linear, color .15s linear;
+
+}
+#button_clear_description_window:hover {
+    transition: background-color .15s linear;
+    background-color: var(--over-light-bg-color);
+    color: var(--dark-text-color);
+}
+
+/* demonstrations settings game -------------------------------- */
+
+/* speed snake */
+#demonstration_speed_snake {
+
+    position: absolute;
+
+    border-radius: 45px;
+    background-color: var(--over-light-bg-color);
+
+}
+#demonstration_speed_snake::before,
+#demonstration_speed_snake::after {
+
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+
+    position: absolute;
+    right: 10px;
+
+    border-radius: 50%;
+    background-color: var(--dark-text-color);
+
+    z-index: 4;
+
+}
+#demonstration_speed_snake::before {
+    top: 7px;
+}
+#demonstration_speed_snake::after {
+    bottom: 7px;
+}
+
+/* demonstration size play field */
+#demonstration_size_play_field {
+
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+
+    color: var(--over-light-bg-color);
+    text-align: center;
+    font-size: 1.25em;
+
+}
+#demonstration_size_play_field div {
+    flex: 0 1 33%;
+    opacity: 0.5;
+}
+#demonstration_size_play_field table {
+    border-collapse: collapse;
+    border-radius: 5px;
+    outline: 1px solid var(--over-light-bg-color);
+
+    overflow: hidden;
+}
+#demonstration_size_play_field table tr:nth-child(odd) td:nth-child(odd) {
+    background-color: var(--over-light-bg-color);
+}
+#demonstration_size_play_field table tr:nth-child(even) td:nth-child(even) {
+    background-color: var(--over-light-bg-color);
+}

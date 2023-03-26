@@ -1,0 +1,32 @@
+#setting_switches {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+#setting_switches button {
+
+    display: block;
+    height: 100%;
+
+    box-sizing: border-box;
+    padding: 15px;
+
+    color: var(--dark-text-color);
+    background-color: var(--over-light-bg-color);
+    border: 2px solid transparent;
+
+}
+#setting_switches button:first-child {
+    border-bottom: 1px solid var(--dark-text-color);
+    border-radius: 10px 10px 0 0;
+}
+#setting_switches button:last-child {
+    border-top: 1px solid var(--dark-text-color);
+    border-radius: 0 0 10px 10px;
+}
+#setting_switches button:hover {
+    background-color: var(--dark-text-color);
+    color: var(--over-light-bg-color);
+}

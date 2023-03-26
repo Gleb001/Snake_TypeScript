@@ -1,0 +1,30 @@
+/* main ======================================================== */
+#game_area {
+
+    width: 100%;
+    position: relative;
+
+    border-radius: 20px;
+    overflow: hidden;
+
+}
+#game_area table {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+/* background_play_field --------------------------------------- */
+#background_play_field {
+    position: absolute;
+    top: 0;
+    z-index: -2;
+}
+#background_play_field td {
+    background-color: #3fbb54;
+}
+#background_play_field tr:nth-child(even) td:nth-child(odd),
+#background_play_field tr:nth-child(odd) td:nth-child(even) {
+    background-color: #4ec760;
+}
