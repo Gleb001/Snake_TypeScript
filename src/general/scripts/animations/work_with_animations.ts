@@ -1,16 +1,4 @@
-// typescripts entities ======================================== //
-
-// types ------------------------------------------------------- //
-type ChangingProperty = {
-    name: string,
-    unit_of_measurement?: string,
-    function_value?: string,
-    start_value: any,
-    end_value: any
-}
-type AnimationType = typeof AnimationCSS.prototype | typeof AnimationJS.prototype
-
-// interfaces -------------------------------------------------- //
+// typescripts ================================================= //
 interface AnimaitonPattern {
     changing_elements: (HTMLElement)[],
     changing_properties: ChangingProperty[],
@@ -26,6 +14,16 @@ interface AnimaitonJSParameters extends AnimaitonPattern {
 interface AnimaitonCSSParameters extends AnimaitonPattern {
     animation_css: string
 }
+
+type ChangingProperty = {
+    name: string,
+    unit_of_measurement?: string,
+    function_value?: string,
+
+    start_value: any,
+    end_value: any
+}
+type AnimationType = typeof AnimationCSS.prototype | typeof AnimationJS.prototype
 
 // main ======================================================== //
 class AnimationJS {
@@ -60,7 +58,7 @@ class AnimationJS {
     constructor(animation_settings: AnimaitonJSParameters) {
 
         animation_settings.changing_properties.forEach(
-            (prop: ChangingProperty) => {
+            prop => {
                 if (typeof prop.unit_of_measurement != "string") {
                     prop.unit_of_measurement = "";
                 }
@@ -76,19 +74,16 @@ class AnimationJS {
     }
 
     // object methods ------------------------------------------ //
-    _ID_ANIMATION: number = 0
+    _ID_ANIMATION?: number
     _ANIMATION_SETTINGS: AnimaitonJSParameters
 
     start() {
-
-        let duration = this._ANIMATION_SETTINGS.timing_settings.duration;
-        let delay = this._ANIMATION_SETTINGS.timing_settings.delay;
-
         setTimeout(
             () => {
 
                 let current_animation = this;
                 let start_animation = performance.now();
+                let duration = this._ANIMATION_SETTINGS.timing_settings.duration;
 
                 this._ID_ANIMATION = window.requestAnimationFrame(
                     function animate(timestamp) {
@@ -105,18 +100,16 @@ class AnimationJS {
                     }
                 );
 
-            }, delay
+            }, this._ANIMATION_SETTINGS.timing_settings.delay
         );
-
     }
     end() {
-
-        window.cancelAnimationFrame(this._ID_ANIMATION);
-
-        if (typeof this._ANIMATION_SETTINGS.next_function == "function") {
+        if (this._ID_ANIMATION) {
+            window.cancelAnimationFrame(this._ID_ANIMATION);
+        }
+        if (this._ANIMATION_SETTINGS.next_function) {
             this._ANIMATION_SETTINGS.next_function();
         }
-
     }
 
     _changeEachPropertyInOrder(time_fraction: number) {
@@ -128,14 +121,11 @@ class AnimationJS {
         );
     }
     _calculate(time_fraction: number, property: ChangingProperty) {
-
         let distance = property.end_value - property.start_value;
         let y_coordinate = this._ANIMATION_SETTINGS.timing_settings.timing_function(
             time_fraction
         );
-
         return y_coordinate * distance;
-
     }
     _draw(replacement_value: number, property: ChangingProperty) {
 
@@ -306,11 +296,13 @@ function animationLadder(
             animations[index] = animationExtend(
                 main_animation,
                 () => {
-                    if (typeof nested_animation == "function") {
-                        nested_animation().start();
-                    }
-                    if (typeof nested_animation == "object") {
-                        nested_animation.start();
+                    switch (typeof nested_animation) {
+                        case "function":
+                            nested_animation().start();
+                            break;
+                        case "object":
+                            nested_animation.start();
+                            break;
                     }
                 }
             );
@@ -324,8 +316,7 @@ function animationLadder(
 
 };
 function animationExtend(
-    animation: AnimationType,
-    additional_value: () => void
+    animation: AnimationType, additional_value: () => void
 ) {
 
     let current_next_function = animation._ANIMATION_SETTINGS.next_function;
@@ -339,4 +330,4 @@ function animationExtend(
 };
 
 // export ====================================================== //
-export {AnimationJS, AnimationCSS, animationLadder, animationExtend}
+export { AnimationJS, AnimationCSS, animationLadder, animationExtend }

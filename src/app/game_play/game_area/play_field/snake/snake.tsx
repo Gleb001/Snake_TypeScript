@@ -29,7 +29,7 @@ type ShiftNumberType = -1 | 1
 
 // imports ===================================================== //
 import PlayField from "../play_field";
-import GENERAL_SETTINGS_GAME from "settings_game";
+import SETTINGS_GAME from "settings_game";
 
 // main ======================================================== //
 let Snake: SnakeType = {
@@ -68,7 +68,7 @@ let Snake: SnakeType = {
 
     launchDraw() {
 
-        let color_snake = GENERAL_SETTINGS_GAME.get("snake", "color");
+        let color_snake = SETTINGS_GAME.get("snake", "color");
         let y_coordinate = Math.trunc(PlayField.number_rows / 2);
         let x_coordinate = 2;
 
@@ -118,7 +118,7 @@ let Snake: SnakeType = {
         // addtional fucntions --------------------------------- //
         function isWall(cell: HTMLTableCellElement) {
 
-            if (!GENERAL_SETTINGS_GAME.get("snake", "has_walls")) return false;
+            if (!SETTINGS_GAME.get("snake", "has_walls")) return false;
 
             let row_head_snake = cell?.parentNode as HTMLTableRowElement;
             let x_head_snake = Number(cell?.cellIndex);
@@ -136,13 +136,13 @@ let Snake: SnakeType = {
 
         }
         function isObstacle(cell: HTMLTableCellElement) {
-            let obstacles = GENERAL_SETTINGS_GAME.get("play_field", "modes").obstacles;
+            let obstacles = SETTINGS_GAME.get("play_field", "modes").obstacles;
             return obstacles.indexOf(cell?.style.backgroundColor) != -1;
         }
 
     },
     draw() {
-        let snake_color = GENERAL_SETTINGS_GAME.get("snake", "color");
+        let snake_color = SETTINGS_GAME.get("snake", "color");
         for (let cell of this.DYNAMIC_SETTINGS.cells) {
             if (!cell?.classList.contains("snake")) {
                 cell!.className = "snake";

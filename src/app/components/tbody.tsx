@@ -1,26 +1,38 @@
+// typescript ================================================== //
+type TbodyType = typeof JSX.FunctionComponentHTML<
+    HTMLElement,
+    {
+        size_cell: number,
+        number_rows: number,
+        number_columns: number,
+    }
+>
+
 // import ====================================================== //
-// utilities --------------------------------------------------- //
 import createHTMLElement from "jsx";
 
 // main ======================================================== //
-export default function Tbody(props: {
-    size_cell: number, number_rows: number, number_columns: number,
-}) {
+let Tbody: TbodyType = ({size_cell, number_rows, number_columns}) => {
 
-    let rows = Array.from(Array(props.number_rows), elem => 0);
-    let columns = Array.from(Array(props.number_columns), elem => 0);
+    let rows = new Array(number_rows).fill(0);
+    let columns = new Array(number_columns).fill(0);
 
     return (
         <tbody>{
             rows.map(row => (
-                <tr>{columns.map(column => (
-                    <td style={
-                        `width: ${props.size_cell}px;
-                        height: ${props.size_cell}px;`
-                    }></td>
-                ))}</tr>
+                <tr>{
+                    columns.map(column => (
+                        <td style={
+                            `width: ${size_cell}px;
+                            height: ${size_cell}px;`
+                        }></td>
+                    ))
+                }</tr>
             ))
         }</tbody>
     );
 
 };
+
+// export ====================================================== //
+export default Tbody;

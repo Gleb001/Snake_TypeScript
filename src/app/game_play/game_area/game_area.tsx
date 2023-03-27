@@ -12,7 +12,7 @@ interface GameAreaType extends JSX.ObjectComponentHTML<
 import "./game_area.css";
 import PlayField from "./play_field/play_field";
 import Tbody from "../../components/tbody";
-import Countdown from "./countdown/countdown";
+import CountdownTimer from "./countdown_timer/countdown_timer";
 import GENERAL_SETTINGS_GAME from "settings_game";
 import createHTMLElement from "jsx";
 
@@ -45,10 +45,10 @@ let GameArea: GameAreaType = {
                     number_columns={number_columns}
                 />
             </PlayField>,
-            <Countdown
-                value={1}
-                time={1000}
-                eventAfterCountdown={() => {
+            <CountdownTimer
+                value={3}
+                time_countdown={1000}
+                completionAction={() => {
                     PlayField.status = "play_game";
                     GENERAL_SETTINGS_GAME.get("play_field", "modes").mode_func();
                     PlayField.draw();

@@ -95,7 +95,7 @@ let PlayField: PlayFieldType = {
 
             let index = Math.floor(Math.random() * number_cells);
             cell = cells[index];
-            if (cell?.style.backgroundColor) {
+            if (cell?.className != "") {
                 cells.splice(index, 1);
                 cell = null;
             }

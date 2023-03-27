@@ -9,13 +9,17 @@ declare global {
         }
 
         // special JS-DOM element ------------------------------ //
-        function FunctionComponentHTML<Spec_props = {}>(
-            props: Props | Spec_props,
+        function FunctionComponentHTML<
+            ElementType = HTMLElement,
+            Spec_props = {}
+        >(
+            props: Props & Spec_props,
             children: (Node | HTMLElement)[]
-        ): HTMLElement
+        ): ElementType
+
         interface ObjectComponentHTML<HTMLType = HTMLElement, Props = any> {
             HTML: HTMLType & HTMLElement,
-            render: typeof JSX.FunctionComponentHTML<Props>,
+            render: typeof JSX.FunctionComponentHTML<HTMLType, Props>,
         }
 
         // For JSX implementation ------------------------------ //
@@ -38,16 +42,13 @@ export default function createHTMLElement(
     let html_element;
 
     switch (typeof tag) {
-
         case "object":
             tag.HTML.innerHTML = "";
             html_element = tag.render(attributes ?? {}, children);
             break;
-
         case "function":
             html_element = tag(attributes ?? {}, children);
             break;
-
         case "string":
             html_element = document.createElement(tag);
             // set attributes
@@ -70,9 +71,7 @@ export default function createHTMLElement(
                 }
             }
             break;
-
         default: break;
-
     }
 
     return html_element;

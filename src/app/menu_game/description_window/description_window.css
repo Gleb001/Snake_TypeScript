@@ -31,6 +31,10 @@
     font-size: 4em;
 
 }
+#intro_text {
+    text-shadow: 1px 0 1px #16481E, 0 1px 1px #16481E,
+                -1px 0 1px #16481E, 0 -1px 1px #16481E;
+}
 
 /* button clear description window ----------------------------- */
 #button_clear_description_window {

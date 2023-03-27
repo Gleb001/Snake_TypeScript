@@ -37,7 +37,7 @@ interface SETTINGS_GAME_TYPE {
     },
     snake: {
         speed: GeneralSetting<"low" | "normal" | "fast" | "very fast", number>,
-        color: GeneralSetting<"blue" | "yellow" | "pink" | "lazyr" | "tomato", string>,
+        color: GeneralSetting<"blue" | "white" | "violet" | "black", string>,
         has_walls: boolean
     },
 
@@ -128,11 +128,10 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
         color: {
             current: "blue",
             list: {
-                "blue": "rgb(72, 53, 181)",
-                "yellow": "rgb(185, 183, 48)",
-                "tomato": "rgb(181, 53, 53)",
-                "pink": "rgb(172, 48, 145)",
-                "lazyr": "rgb(53, 155, 181)",
+                "blue": "rgb(3, 51, 87)",
+                "white": "rgb(255, 244, 240)",
+                "black": "rgb(30, 28, 33)",
+                "violet": "rgb(181, 173, 228)",
             },
         },
         has_walls: true
