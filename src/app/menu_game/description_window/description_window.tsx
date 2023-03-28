@@ -33,12 +33,17 @@ import Tbody from "../../components/tbody";
 let DescriptionWindow: DescriptionWindowType = {
 
     HTML: <div id="description_window"></div>,
-    intro_text: <span id="intro_text">Hello</span>,
+    get intro_text() { return <span id="intro_text">Hello</span> },
     status: "wait_input_animation",
 
     render() {
+
+        this.status = "wait_input_animation";
+        this.HTML.setAttribute("style", "");
+
         this.HTML.append(this.intro_text);
         return this.HTML;
+
     },
     renderSizesPlayField() {
 
