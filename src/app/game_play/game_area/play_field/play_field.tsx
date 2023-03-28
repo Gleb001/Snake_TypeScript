@@ -23,6 +23,7 @@ interface PlayFieldType extends JSX.ObjectComponentHTML<
 
 // imports ===================================================== //
 import "./play_field.css";
+import "./obstacle/obstacle";
 import Snake from "./snake/snake";
 import Fruits from "./fruits/fruits";
 import createHTMLElement from "jsx";
@@ -71,7 +72,7 @@ let PlayField: PlayFieldType = {
         for (let update of this.updateScripts) update();
         if (this.stopDrawScripts.some(stopDraw => stopDraw())) return this.endGame();
         for (let drawElement of this.drawElementScripts) drawElement();
-        
+
         this.timeoutID = setTimeout(
             () => this.draw(),
             GENERAL_SETTINGS_GAME.get("snake", "speed")
@@ -82,22 +83,36 @@ let PlayField: PlayFieldType = {
         PlayField.status = "wait";
     },
 
-    getCell(x, y) { return this.HTML.rows[y].cells[x]; },
+    getCell(x, y) {
+
+        let range_has_x = x > 0 || x < this.number_columns;
+        let range_has_y = y > 0 || y < this.number_rows;
+
+        let cell = null
+        if (range_has_x || range_has_y) cell = this.HTML.rows[y].cells[x];
+
+        return cell;
+        
+    },
     get randomEmptyCell() {
 
         let cells = Array.from(this.HTML.querySelectorAll("td"));
+        let skip_cell = this.getCell(
+            Snake.DYNAMIC_SETTINGS.head_cell.x + 1,
+            Snake.DYNAMIC_SETTINGS.head_cell.y + 1,
+        );
 
         let cell = null;
-        while (!cell) {
-
-            let number_cells = cells.length;
-            if (number_cells < 1) break;
+        let number_cells = cells.length;
+        while (number_cells == 0 || !cell) {
 
             let index = Math.floor(Math.random() * number_cells);
-            cell = cells[index];
-            if (cell?.className != "") {
+            let check_cell = cells[index];
+
+            if (check_cell?.className != "" || check_cell == skip_cell) {
                 cells.splice(index, 1);
-                cell = null;
+            } else {
+                cell = check_cell;
             }
 
         }

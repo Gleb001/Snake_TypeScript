@@ -58,11 +58,7 @@ let Fruits: FruitsType = {
 
     },
     // 
-    stopDraw() {
-        let max_score = PlayField.number_rows * PlayField.number_columns;
-        let current_score = Number(this.HTML.value);
-        return current_score >= max_score;
-    },
+    stopDraw() { return PlayField.randomEmptyCell == null; },
     draw() {
         for (let apple of this.cells) {
             if (!apple.classList.contains("apple")) {

@@ -137,7 +137,10 @@ let Snake: SnakeType = {
         }
         function isObstacle(cell: HTMLTableCellElement) {
             let obstacles = SETTINGS_GAME.get("play_field", "modes").obstacles;
-            return obstacles.indexOf(cell?.style.backgroundColor) != -1;
+            return (
+                obstacles.indexOf(cell.style.backgroundColor) != -1 ||
+                cell.classList.contains("active_obstacle")
+            );
         }
 
     },

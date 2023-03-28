@@ -23,7 +23,7 @@ let GameArea: GameAreaType = {
     width: document.body.offsetWidth * 0.7,
     height: document.body.offsetHeight * 0.9,
 
-    render(props, children) {
+    render({ endGame }) {
 
         let size_cell = GENERAL_SETTINGS_GAME.get("play_field", "size_cell");
         let number_rows = Math.trunc(this.height / size_cell);
@@ -38,7 +38,7 @@ let GameArea: GameAreaType = {
                 />
             </table>,
             // @ts-ignore: This component is an object (has the JSX.ObjectComponentHTML type)
-            <PlayField endGame={props.endGame}>
+            <PlayField endGame={endGame}>
                 <Tbody
                     size_cell={size_cell}
                     number_rows={number_rows}
@@ -50,7 +50,7 @@ let GameArea: GameAreaType = {
                 time_countdown={1000}
                 completionAction={() => {
                     PlayField.status = "play_game";
-                    GENERAL_SETTINGS_GAME.get("play_field", "modes").mode_func();
+                    GENERAL_SETTINGS_GAME.get("play_field", "modes").mode_func(PlayField);
                     PlayField.draw();
                 }}
             />

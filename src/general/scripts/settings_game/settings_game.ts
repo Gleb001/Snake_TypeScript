@@ -24,7 +24,7 @@ interface SETTINGS_GAME_TYPE {
         size_cell: GeneralSetting<"small" | "medium" | "huge", number>,
         modes: GeneralSetting<
             "classic" | "no walls" | "obstacles" | "hippi",
-            { obstacles: any[], mode_func: () => void }
+            { obstacles: string[], mode_func: (...args: any) => void }
         >,
     },
     apple: {
@@ -66,7 +66,7 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
             }
         },
         modes: {
-            current: "classic",
+            current: "obstacles",
             list: {
                 "classic": {
                     get obstacles() {
@@ -86,13 +86,50 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
                 },
                 "obstacles": {
                     get obstacles() {
-                        return [
-                            "black",
-                            SETTINGS_GAME.get("snake", "color")
-                        ];
+                        return [SETTINGS_GAME.get("snake", "color")];
                     },
-                    mode_func() {
+                    mode_func(PlayField: {
+                        randomEmptyCell: HTMLTableCellElement | null,
+                        status: "play_game" | "wait"
+                    }) {
+
+                        let score_player = document.getElementById("counter_apples") as HTMLInputElement;
+
+                        let previous_score = Number(score_player.value);
+                        SETTINGS_GAME.get("play_field", "modes").obstacles.pop();
+                        let ID_interval =  setInterval(() => {
+
+                            let empty_cell = PlayField.randomEmptyCell;
+                            if (PlayField.status != "play_game" || empty_cell == null) {
+                                clearInterval(ID_interval);
+                                return;
+                            }
+
+                            let current_score = Number(score_player.value);
+                            if (previous_score != current_score) {
+
+                                let duration_animation = 1000;
+                                empty_cell.style.animation = `appear ${duration_animation}ms linear forwards`;
+                                empty_cell.classList.add("obstacle");
+                                setTimeout(
+                                    () => {
+                                        if (empty_cell) {
+                                            console.log("no empty cell");
+                                            SETTINGS_GAME.get("play_field", "modes").obstacles.push("active_obstacle");
+                                            empty_cell.classList.add("active_obstacle");
+                                        }
+                                    },
+                                    duration_animation
+                                );
+
+                                previous_score = current_score;
+
+                            }
+
+                        }, 55);
+
                         SETTINGS_GAME.set("snake", "has_walls", true);
+
                     }
                 },
                 "hippi": {

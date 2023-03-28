@@ -3,6 +3,7 @@ import "./main.css";
 import MenuGame from "./menu_game/menu_game";
 import GamePlay from "./game_play/game_play";
 import createHTMLElement from "jsx";
+import { ElementFlags } from "typescript";
 
 // main ======================================================== //
 let GameContainer = {
@@ -19,43 +20,49 @@ let GameContainer = {
         GameContainer.render(
             // @ts-ignore: This component is an object (has the JSX.ObjectComponentHTML type)
             <MenuGame startGame={() => {
-    
-                let duration_animation = 1000;
-                MenuGame.HTML.style.animation = `
-                    disappear ${duration_animation}ms linear forwards
-                `;
-    
-                setTimeout(GameContainer.renderGamePlay, duration_animation);
-    
+                if (MenuGame.HTML.style.animation == "") {
+                    playAnimationCSS(
+                        MenuGame.HTML,
+                        "disappear linear forwards",
+                        1000,
+                        GameContainer.renderGamePlay
+                    );  
+                }
             }} />,
-            () => {
-                MenuGame.HTML.style.animation = `
-                    750ms appear linear forwards
-                `;
-            }
+            () => playAnimationCSS(MenuGame.HTML, "appear linear forwards", 750)
         );
     },
     renderGamePlay() {
         GameContainer.render(
             // @ts-ignore: This component is an object (has the JSX.ObjectComponentHTML type)
             <GamePlay endGame={() => {
-    
-                let duration_animation = 1000;
-                GamePlay.HTML.style.animation = `
-                    ${duration_animation}ms linear forwards
-                `;
-    
-                setTimeout(GameContainer.renderMenuGame, duration_animation);
-    
+                if (GamePlay.HTML.style.animation == "") {
+                    playAnimationCSS(
+                        GamePlay.HTML,
+                        "disappear linear forwards",
+                        1000,
+                        GameContainer.renderMenuGame
+                    );  
+                }
             }} />,
-            () => {
-                GamePlay.HTML.style.animation = `
-                    750ms appear linear forwards
-                `;
-            }
+            () => playAnimationCSS(GamePlay.HTML, "appear linear forwards", 750)
         );
     },
 };
+
+// additional functions ---------------------------------------- //
+function playAnimationCSS(
+    element: HTMLElement,
+    animation_css: string,
+    duration: number,
+    completionAction?: () => void,
+) {
+    element.style.animation = `${duration}ms ${animation_css}`;
+    setTimeout(() => {
+        element.style.animation = "";
+        if (completionAction) completionAction();
+    }, Math.abs(duration));
+}
 
 // events window ----------------------------------------------- //
 window.addEventListener("load", GameContainer.renderMenuGame);
