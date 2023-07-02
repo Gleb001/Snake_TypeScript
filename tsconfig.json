@@ -30,10 +30,11 @@
     "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
-      "animations": ["src/general/scripts/animations/work_with_animations"],
+      "animations": ["src/general/scripts/animations/index"],
       "patterns_animations": ["src/general/scripts/animations/patterns/animations"],
-      "jsx": ["src/general/scripts/jsx/work_with_html"],
-      "settings_game": ["src/general/scripts/settings_game/settings_game"]
+      "jsx": ["src/general/scripts/jsx/index"],
+      "settings_game": ["src/general/scripts/settings_game/index"],
+      "@components/*": ["src/app/components/*"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

@@ -1,6 +1,5 @@
-
 // import module =============================================== //
-import { AnimationCSS, AnimationJS } from "animations";
+import { AnimationCSS, AnimationJS } from "../index";
 
 // main ======================================================== //
 // opacity ----------------------------------------------------- //

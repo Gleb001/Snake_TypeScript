@@ -1,0 +1,47 @@
+/* imports ===================================================== */
+
+/* general ----------------------------------------------------- */
+@import url("./colors/colors.css");
+@import url("./icons/icons.css");
+@import url("./texts/texts.css");
+@import url("./normalize/normalize.css");
+
+/* animations ------------------------------------------------- */
+@import url("./animations/animations.css");
+
+
+/* main ======================================================== */
+body {
+
+    background-color: var(--light-bg-color);
+
+    font-size: 16px;
+    font-family: 'Open Sans Hebrew';
+    color: var(--dark-text-color);
+
+}
+
+/* root -------------------------------------------------------- */
+.game_container {
+
+    height: 100vh;
+    margin: 0 auto;
+
+    box-sizing: border-box;
+    padding: 20px 50px;
+
+    display: flex;
+    align-items: center;
+
+}
+
+/* media ======================================================= */
+@media screen and (max-width: 2000px) {
+    .game_container { width: 1400px; }
+}
+@media screen and (max-width: 1600px) {
+    .game_container { width: 1300px;  }
+}
+@media screen and (max-width: 1366px) {
+    .game_container { width: 100%; }
+}

@@ -1,32 +1,53 @@
-
 // requires ============================================== //
-// path
 const path = require("path");
 // plugins
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
+// constants ============================================= //
+const PATHS = {
+    animations: path.resolve(
+        __dirname,
+        "./src/general/scripts/animations/index.ts"
+    ),
+    "jsx": path.resolve(
+        __dirname,
+        "./src/general/scripts/jsx/index.ts"
+    ),
+    patterns_animations: path.resolve(
+        __dirname,
+        "./src/general/scripts/animations/patterns/animations.ts"
+    ),
+    settings_game: path.resolve(
+        __dirname,
+        "./src/general/scripts/settings_game/index.ts"
+    ),
+    "@components": path.resolve(
+        __dirname,
+        "./src/app/components"
+    )
+};
+
 // main ================================================== //
 module.exports = {
-
-    // entry and output points
-    entry: "./src/app/main.tsx",
+    entry: "./src/app/index.tsx",
     output: {
         clean: true,
         filename: "bundle.js",
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "demo"),
     },
-
-    // modules, plugins, resolve
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
-                use: "ts-loader",
-                exclude: "/node_modules/",
+                test: /\.(ts)x?$/,
+                use: "ts-loader", 
+                exclude: /node_modules/
             },
             {
                 test: /\.css$/,
-                use: ["style-loader", "css-loader"],
+                use: [
+                    "style-loader",
+                    "css-loader"
+                ],
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
@@ -45,21 +66,15 @@ module.exports = {
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js", ".css"],
-        alias: {
-            "animations": path.resolve(__dirname, "./src/general/scripts/animations/work_with_animations.ts"),
-            "patterns_animations": path.resolve(__dirname, "./src/general/scripts/animations/patterns/animations.ts"),
-            "jsx": path.resolve(__dirname, "./src/general/scripts/jsx/work_with_html.ts"),
-            "settings_game": path.resolve(__dirname, "./src/general/scripts/settings_game/settings_game.ts"),
-        }
+        alias: PATHS
     },
-
-    // optimization
     optimization: {
         splitChunks: { chunks: "all", }
     },
-
     stats: {
         errorDetails: true,
     },
-
+    watchOptions: {
+        ignored: "**/node_modules",
+    },
 };
