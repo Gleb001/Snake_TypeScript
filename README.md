@@ -8,7 +8,7 @@
 ## Вступление
 Привет, представляю тебе мой небольшой домашний проект, целью которого было отточить навыки в области программирования на [TypeScript](https://www.typescriptlang.org/). Если покопаться в коде данного проекта, то можно увидеть очень много достаточно странных и возмутимых решений. Безусловно, я бы сам многое исправил и в корне переписал, но, увы, я решил оставить всё как есть, так как обновление кода сотрёт мои лучшие наработки того времени (декабрь 2022 года) и тем не менее отнимет у меня достаточно времени. Ниже есть ссылка на игру, а также описание идей вложенных в проект.
 
-Поиграть в змейку можно по следующей ссылке: 
+Поиграть в змейку можно по следующей ссылке: https://gleb001.github.io/Snake_TypeScript/demo/
 
 ## Основная часть
 "Основная часть" описания проекта поделена на две части, где первая раскрывает основной работоспособный код "веб-приложения", а вторая - самописные библиотеки и [хелперы (helpers)](https://stackoverflow.com/questions/19270178/what-are-helper-functions-in-c).
@@ -100,7 +100,7 @@ const NameComponent = {
 ## Introduction
 Hi, I present to you my small home project, the purpose of which was to hone skills in the field of programming in [TypeScript](https://www.typescriptlang.org/). If you dig into the code of this project, you can see a lot of rather strange and outraged solutions. Of course, I would have corrected a lot myself and radically rewritten it, but, alas, I decided to leave everything as it is, since updating the code will erase my best practices of that time (December 2022) and nevertheless will take me enough time. Below there is a link to the game, as well as a description of the ideas invested in the project.
 
-You can play snake at the following link:
+You can play snake at the following link: https://gleb001.github.io/Snake_TypeScript/demo/
 
 ## The main part
 The "main part" of the project description is divided into two parts, where the first reveals the main workable code of the "web application", and the second - self-written libraries and [helpers](https://stackoverflow.com/questions/19270178/what-are-helper-functions-in-c).
