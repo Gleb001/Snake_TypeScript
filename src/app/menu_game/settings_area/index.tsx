@@ -12,7 +12,6 @@ let SettingsArea: SettingsAreaType = {
     HTML: <div id="settings_area"></div>,
 
     render({ startGame }) {
-
         this.HTML.append(
             <h1 id="name_game">Snake TypeScript</h1>,
             <div class="settings_game__container">
@@ -28,9 +27,6 @@ let SettingsArea: SettingsAreaType = {
                 onclick={startGame}
             >start game</button>,
         );
-
-        return this.HTML;
-
     },
 
 };

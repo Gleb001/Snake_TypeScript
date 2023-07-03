@@ -18,7 +18,7 @@ declare global {
         ): Element
 
         interface ObjectComponentHTML<Element = HTMLElement, Props = any> {
-            HTML: Element, render: (props: Props, children: Children) => Element
+            HTML: Element, render: (props: Props, children: Children) => void
         }
 
         // For JSX implementation ------------------------------ //

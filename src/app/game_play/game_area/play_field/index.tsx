@@ -15,7 +15,6 @@ let PlayField: PlayFieldType = {
     render({}, [tbody]) {
         this.HTML.append(tbody);
         inSeries(...this.scripts.launch);
-        return this.HTML;
     },
     draw() {
         inSeries(...this.scripts.update);

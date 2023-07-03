@@ -19,7 +19,6 @@ let GameArea: GameAreaType = {
     duration_redraw: () => SETTINGS_GAME.get("snake", "speed"),
 
     render({ endGame }) {
-
         let size_cell = SETTINGS_GAME.get("play_field", "size_cell");
         let number_rows = Math.trunc(this.height() / size_cell);
         let number_columns = Math.trunc(this.width() / size_cell);
@@ -59,9 +58,6 @@ let GameArea: GameAreaType = {
                 }}
             />
         );
-
-        return GameArea.HTML;
-
     },
 
 };

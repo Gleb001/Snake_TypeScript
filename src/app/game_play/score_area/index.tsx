@@ -12,15 +12,11 @@ let ScoreArea: ScoreAreaType = {
     HTML: <div id="score_area"></div>,
 
     render() {
-
         this.HTML.append(
             <div class="score_player">
                 <ScoreCounter className="apples"/>
             </div>,
         );
-
-        return this.HTML;
-
     },
 
 };

@@ -17,17 +17,12 @@ let SettingsGame: SettingsGameType = {
     width_setting: 350,
 
     render() {
-
         Object.values(SettingsGame.settings).forEach(
             setting => SettingsGame.HTML.append(setting)
         );
-
         let number_settings = SettingsGame.HTML.querySelectorAll(".setting").length;
         let number_columns = Math.round(number_settings / 2);
         SettingsGame.HTML.style.width = (SettingsGame.width_setting * number_columns) + "px";
-
-        return SettingsGame.HTML;
-
     },
     renderSetting({ name, className, animations }, children) {
 

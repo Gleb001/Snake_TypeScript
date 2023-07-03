@@ -17,13 +17,9 @@ let DescriptionWindow: DescriptionWindowType = {
     status: "wait_input_animation",
 
     render() {
-
         this.status = "wait_input_animation";
         this.HTML.setAttribute("style", "");
-
         this.HTML.append(this.intro_text);
-        return this.HTML;
-
     },
     renderSizesPlayField() {
 

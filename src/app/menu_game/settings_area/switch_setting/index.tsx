@@ -12,7 +12,6 @@ let SettingSwitches: SettingSwitchesType = {
     HTML: <div id="setting_switches"></div>,
 
     render() {
-
         this.HTML.append(
             <this.renderSettingSwitch
                 shift_to_left={-350}
@@ -23,9 +22,6 @@ let SettingSwitches: SettingSwitchesType = {
                 className="icon-arrow_left"
             />
         );
-
-        return this.HTML;
-
     },
     renderSettingSwitch({ shift_to_left, className }) {
         return <button

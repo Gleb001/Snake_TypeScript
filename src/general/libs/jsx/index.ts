@@ -51,7 +51,8 @@ let createHTMLElement: createHTMLElementType = (
     switch (typeof tag) {
         case "object":
             tag.HTML.innerHTML = "";
-            element = tag.render(attributes ?? {}, children);
+            tag.render(attributes ?? {}, children);
+            element = tag.HTML;
             break;
         case "function":
             element = tag(attributes ?? {}, children);

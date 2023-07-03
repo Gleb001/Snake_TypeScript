@@ -11,16 +11,12 @@ import GameArea from "./game_area";
 let GamePlay: GamePlayType = {
     HTML: <div id="game_play"></div>,
     render({ endGame }) {
-
         GamePlay.HTML.append(
             // @ts-ignore: This component is an object (has the JSX.ObjectComponentHTML type)
             <ScoreArea />,
             // @ts-ignore: This component is an object (has the JSX.ObjectComponentHTML type)
             <GameArea endGame={endGame}/>
         );
-
-        return GamePlay.HTML;
-
     }
 };
 
