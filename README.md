@@ -91,7 +91,7 @@ const NameComponent = {
 Описание функциональности данных хелперов и небольших библиотек я не вижу смысла, так как считаю, что вы с легкостью сможете рассмотреть их в коде, опираясь на типы и простой синтаксис.
 
 ## Заключение
-Подводя итог проделанной работе, я бы хотел заметить, что в данном проекте я допустил огромную ошибку в том, что решил [организовать компоненты]() так, как они представлены. Ошибка заключается в ужасной работе с компонентами - компоненты внутри метода render вкладывают в себя другие компоненты, которые в свою очередь делают также! Как итог, мы видим нерациональное использование jsx/tsx библиотеки...
+Подводя итог проделанной работе, я бы хотел заметить, что в данном проекте я допустил огромную ошибку в том, что решил [организовать компоненты](#первая-часть-основной-код) так, как они представлены. Ошибка заключается в ужасной работе с компонентами - компоненты внутри метода render вкладывают в себя другие компоненты, которые в свою очередь делают также! Как итог, мы видим нерациональное использование jsx/tsx библиотеки...
 
 
 
@@ -183,4 +183,4 @@ The auxiliary code contains libraries and helpers, which are described below and
 I don't see the point in describing the functionality of these helpers and small libraries, since I think that you can easily consider them in the code, relying on types and simple syntax.
 
 ## Conclusion
-Summing up the work done, I would like to note that in this project I made a huge mistake in deciding to [organize the components]() as they are presented. The mistake lies in the terrible work with components - components inside the render method put other components into themselves, which in turn do the same! As a result, we see the irrational use of the jsx/tsx library...
+Summing up the work done, I would like to note that in this project I made a huge mistake in deciding to [organize the components](#the-first-part-main-code) as they are presented. The mistake lies in the terrible work with components - components inside the render method put other components into themselves, which in turn do the same! As a result, we see the irrational use of the jsx/tsx library...
