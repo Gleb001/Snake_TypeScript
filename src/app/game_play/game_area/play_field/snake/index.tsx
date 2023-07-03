@@ -1,6 +1,7 @@
 // imports ===================================================== //
 // libs
 import SETTINGS_GAME from "settings_game";
+import range from "@libs/range";
 // components
 import "./styles.css";
 import { SnakeType, CoordinateType, ShiftNumberType } from "./types";
@@ -17,9 +18,9 @@ let Snake: SnakeType = {
             update() {
 
                 let coordinate = Snake.DYNAMIC_SETTINGS.motion_vector.coordinate;
-
                 let new_value = this[coordinate] + Snake.DYNAMIC_SETTINGS.motion_vector.shift_number;
                 let max_value = coordinate == "x" ? PlayField.number_columns - 1 : PlayField.number_rows - 1;
+
                 this[coordinate] = range(0, max_value, new_value);
 
                 return PlayField.getCell(this.x, this.y) as HTMLTableCellElement;
@@ -83,7 +84,7 @@ let Snake: SnakeType = {
     },
     stopDraw() {
 
-        let cells_snake = Snake.DYNAMIC_SETTINGS.cells;
+        let cells_snake = this.DYNAMIC_SETTINGS.cells;
         let head_snake = cells_snake[cells_snake.length - 1];
 
         let stop = true;
@@ -120,27 +121,20 @@ let Snake: SnakeType = {
 
     },
     draw() {
-        let snake_color = SETTINGS_GAME.get("snake", "color");
+        let bg_color = SETTINGS_GAME.get("snake", "color");
         for (let cell of this.DYNAMIC_SETTINGS.cells) {
-            if (!cell?.classList.contains("snake")) {
-                cell!.className = "snake";
-                cell!.style.backgroundColor = snake_color;
+            if (cell && !cell.classList.contains("snake")) {
+                cell.className = "snake";
+                cell.style.backgroundColor = bg_color;
             }
         }
     },
 
 };
 
-// additional functions ---------------------------------------- //
-function range(min: number, max: number, check: number) {
-    if (min > max) { min = max; max = min; }
-    return check < min ? max : check > max ? min : check;
-}
-
 // events ====================================================== //
 window.addEventListener("keydown", (event) => {
-
-    if (PlayField.status != "play_game") return;
+    if (!PlayField.isPlay) return;
 
     let data_motion_vector: [CoordinateType, ShiftNumberType];
     switch (event.key) {

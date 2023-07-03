@@ -1,7 +1,5 @@
 // types ======================================================= //
-interface ScoreAreaType extends JSX.ObjectComponentHTML {
-    data_counters: [{ id: string, class?: string }],
-}
+interface ScoreAreaType extends JSX.ObjectComponentHTML {}
 
 // export ====================================================== //
 export {ScoreAreaType};

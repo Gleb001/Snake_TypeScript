@@ -1,6 +1,6 @@
 // imports ===================================================== //
 // libs
-import createHTMLElement from "jsx";
+import createHTMLElement from "@libs/jsx";
 // components
 import "./styles.css"
 import {ScoreAreaType} from "./types";
@@ -10,16 +10,13 @@ import ScoreCounter from "./counter";
 let ScoreArea: ScoreAreaType = {
 
     HTML: <div id="score_area"></div>,
-    data_counters: [ { id: "counter_apples", } ],
 
     render() {
 
         this.HTML.append(
-            <div class="score_player">{
-                this.data_counters.map(
-                    data => <ScoreCounter {...data}/>
-                )
-            }</div>,
+            <div class="score_player">
+                <ScoreCounter className="apples"/>
+            </div>,
         );
 
         return this.HTML;

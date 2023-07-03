@@ -1,8 +1,8 @@
 // imports ===================================================== //
 // libs
-import createHTMLElement from "jsx";
-import { animationExtend, AnimationCSS } from "animations";
-import { change_opacity } from "patterns_animations";
+import createHTMLElement from "@libs/jsx";
+import { animationExtend, AnimationCSS } from "@libs/animations";
+import { change_opacity } from "@libs/animations/patterns";
 import SETTINGS_GAME from "settings_game";
 // components
 import "./styles.css"

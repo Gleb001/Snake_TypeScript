@@ -1,72 +1,60 @@
 // imports ===================================================== //
 // libs
-import GENERAL_SETTINGS_GAME from "settings_game";
+import SETTINGS_GAME from "settings_game";
 // components
 import "./styles.css";
-import {FruitsType} from "./types";
+import { FruitsType } from "./types";
 import PlayField from "..";
+import ScoreArea from "../../../score_area";
 
 // main ======================================================== //
 let Fruits: FruitsType = {
 
-    get HTML() {
-        return document.getElementById(
-            "counter_apples"
-        ) as HTMLInputElement;
+    get HTML() { return document.getElementById("counter_apples") as HTMLInputElement; },
+    stopDraw() {
+        let counter_apples = ScoreArea.HTML.querySelector("#counter_apples") as HTMLInputElement;
+        let score_player = Number(counter_apples.value);
+        let list_td = PlayField.HTML.querySelectorAll("td");
+        return (score_player + 1 ===  list_td.length);
     },
     cells: [],
 
-    // change it with the matrix
-    launchDraw() {
-
-        let min_x_coordinate = PlayField.number_columns - 8;
-        let max_x_coordinate = PlayField.number_columns - 4;
-        let x_coordinate = min_x_coordinate;
-
-        let y_coordinate = Math.trunc(PlayField.number_rows / 2);
-
-        for (
-            let number_apples = GENERAL_SETTINGS_GAME.apple.number.value;
-            number_apples > 0;
-            number_apples--
-        ) {
-
-            let apple_cell = PlayField.getCell(x_coordinate, y_coordinate);
-            if (apple_cell) {
-                apple_cell.classList.add("apple");
-                this.cells.push(apple_cell);
-            }
-
-            if (x_coordinate == max_x_coordinate) {
-                x_coordinate = min_x_coordinate;
-                y_coordinate += 2;
-            } else {
-                x_coordinate += 2;
-            }
-
-        }
-
-    },
-    // 
-    stopDraw() { return PlayField.randomEmptyCell == null; },
     draw() {
-        for (let apple of this.cells) {
-            if (!apple.classList.contains("apple")) {
-                apple.classList.add("apple");
+        this.cells.forEach(cell => {
+            if (!cell.classList.contains("apple")) {
+                cell.classList.add("apple");
                 this.HTML.value = String(Number(this.HTML.value) + 1);
             }
-        }
+        });
     },
     update() {
-        let cells = this.cells;
-        for (let index = 0; index < cells.length; index++) {
-            let cell = cells[index];
-            if (!cell.classList.contains("apple")) {
-                cells.splice(index, 1);
-                let empty_cell = PlayField.randomEmptyCell;
-                if (empty_cell) cells.push(empty_cell);
+        this.cells = this.cells.map(cell => {
+            let isApple = cell.classList.contains("apple");
+            return isApple ? cell : PlayField.randomEmptyCell as HTMLTableCellElement;
+        });
+    },
+    launchDraw() {
+
+        let min_x = PlayField.number_columns - 8;
+
+        let current_x = min_x;
+        let current_y = Math.floor(PlayField.number_rows / 2);
+
+        let length_apples = { length: SETTINGS_GAME.apple.number.value };
+        this.cells = Array.from(length_apples, () => {
+            let cell = PlayField.getCell(current_x, current_y) as HTMLTableCellElement;
+            cell.classList.add("apple");
+
+            if (current_x == min_x + 4) {
+                current_x = min_x;
+                current_y += 2;
+            } else {
+                current_x += 2;
             }
-        }
+
+            return cell;
+        });
+
     },
 
 };

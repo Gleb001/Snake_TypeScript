@@ -1,20 +1,25 @@
 // imports ===================================================== //
 // libs
-import createHTMLElement from "jsx";
+import createHTMLElement from "@libs/jsx";
 // components
 import "./styles.css";
 import {ScoreCounterType} from "./types";
 
 // main ======================================================== //
-let ScoreCounter: ScoreCounterType = function ({id, className}) {
+let ScoreCounter: ScoreCounterType = function ({className}) {
     return (
-        <input
-            id={id}
-            class={`score_counter ${className}`}
-            value="0"
-            type="number"
-            disabled
-        />
+        <div class="container_score">
+            <div class="ball_container">
+                <div class="ball"></div>
+            </div>
+            <input
+                id="counter_apples"
+                class={`score_counter_${className}`}
+                value="0"S
+                type="number"
+                disabled
+            />
+        </div>
     );
 };
 

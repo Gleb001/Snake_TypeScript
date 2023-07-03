@@ -1,23 +1,22 @@
 // types ======================================================= //
+type NameScriptType = "update" | "draw" | "end" | "launch"
 interface PlayFieldType extends JSX.ObjectComponentHTML<
-    HTMLTableElement
+    HTMLTableElement, {}
 > {
 
     number_columns: number,
     number_rows: number,
 
-    launchDrawScripts: (() => void)[],
-    updateScripts: (() => void)[],
-    stopDrawScripts: (() => boolean)[],
-    drawElementScripts: (() => void)[],
+    isPlay: boolean,
+
+    timeoutID?: ReturnType<typeof setTimeout>,
+
+    scripts: { [key: NameScriptType | string]: (() => void)[]}
 
     getCell(x: number, y: number): HTMLTableCellElement | null,
     randomEmptyCell: HTMLTableCellElement | null,
 
     draw(): void,
-    endGame(): void,
-    timeoutID?: ReturnType<typeof setTimeout>,
-    status: "play_game" | "wait",
 
 }
 

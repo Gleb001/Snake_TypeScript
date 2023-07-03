@@ -1,60 +1,18 @@
-// typescript ================================================== //
-interface GeneralSetting<Key = string, Value = any> {
-    current: Key,
-    list: { [name in Key & string]: Value }
-}
-interface SETTINGS_GAME_TYPE {
-
-    get<
-        Setting extends keyof SETTINGS_GAME_TYPE,
-        Key extends keyof SETTINGS_GAME_TYPE[Setting],
-        Value = SETTINGS_GAME_TYPE[Setting][Key],
-    >(setting: Setting, key: Key): Value extends GeneralSetting ? Value["list"][Value["current"]] : Value,
-    set<
-        Setting extends keyof SETTINGS_GAME_TYPE,
-        Key extends keyof SETTINGS_GAME_TYPE[Setting],
-        NewValue = SETTINGS_GAME_TYPE[Setting][Key],
-    >(
-        setting: Setting,
-        key: Key,
-        new_value: NewValue extends GeneralSetting ? keyof NewValue["list"] : NewValue
-    ): void,
-
-    play_field: {
-        size_cell: GeneralSetting<"small" | "medium" | "huge", number>,
-        modes: GeneralSetting<
-            "classic" | "no walls" | "obstacles" | "hippi",
-            { obstacles: string[], mode_func: (...args: any) => void }
-        >,
-    },
-    apple: {
-        number: {
-            max: number,
-            min: number,
-            value: number,
-        },
-        color: GeneralSetting<"apple", string>,
-    },
-    snake: {
-        speed: GeneralSetting<"low" | "normal" | "fast" | "very fast", number>,
-        color: GeneralSetting<"blue" | "white" | "violet" | "black", string>,
-        has_walls: boolean
-    },
-
-}
+// import ====================================================== //
+import { SettingsGameType, GeneralSettingType } from "./types";
 
 // main ======================================================== //
-let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
+let SETTINGS_GAME: SettingsGameType = {
 
     get(element, key) {
         let setting = this[element][key];
         // @ts-ignore
-        return isGeneralSetting(setting) ? setting.list[setting.current] : setting;
+        return isGeneralSettingType(setting) ? setting.list[setting.current] : setting;
     },
     set(element, key, value) {
         let setting = this[element][key];
         // @ts-ignore
-        isGeneralSetting(setting) ? setting.current : this[element][key] = value;
+        isGeneralSettingType(setting) ? setting.current : this[element][key] = value;
     },
 
     play_field: {
@@ -67,7 +25,7 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
             }
         },
         modes: {
-            current: "obstacles",
+            current: "classic",
             list: {
                 "classic": {
                     get obstacles() {
@@ -91,17 +49,17 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
                     },
                     mode_func(PlayField: {
                         randomEmptyCell: HTMLTableCellElement | null,
-                        status: "play_game" | "wait"
+                        isPlay: boolean
                     }) {
 
                         let score_player = document.getElementById("counter_apples") as HTMLInputElement;
 
                         let previous_score = Number(score_player.value);
                         SETTINGS_GAME.get("play_field", "modes").obstacles.pop();
-                        let ID_interval =  setInterval(() => {
+                        let ID_interval = setInterval(() => {
 
                             let empty_cell = PlayField.randomEmptyCell;
-                            if (PlayField.status != "play_game" || empty_cell == null) {
+                            if (!PlayField.isPlay || empty_cell == null) {
                                 clearInterval(ID_interval);
                                 return;
                             }
@@ -177,9 +135,9 @@ let SETTINGS_GAME: SETTINGS_GAME_TYPE = {
 
 };
 
-// check general setting --------------------------------------- //
-function isGeneralSetting(setting: any): setting is GeneralSetting<typeof setting, any> {
-    return typeof setting.current !== "undefined";
+// additional functions ======================================== //
+function isGeneralSettingType(setting: any): setting is GeneralSettingType<typeof setting> {
+    return (typeof setting.current !== "undefined");
 }
 
 // export ====================================================== //

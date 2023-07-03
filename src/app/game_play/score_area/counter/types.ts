@@ -2,7 +2,6 @@
 type ScoreCounterType = typeof JSX.FunctionComponentHTML<
     HTMLElement,
     {
-        id: string,
         className?: string,
     }
 >

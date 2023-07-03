@@ -5,26 +5,30 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 // constants ============================================= //
 const PATHS = {
-    animations: path.resolve(
-        __dirname,
-        "./src/general/scripts/animations/index.ts"
-    ),
-    "jsx": path.resolve(
-        __dirname,
-        "./src/general/scripts/jsx/index.ts"
-    ),
-    patterns_animations: path.resolve(
-        __dirname,
-        "./src/general/scripts/animations/patterns/animations.ts"
-    ),
+    // animations: path.resolve(
+    //     __dirname,
+    //     "./src/general/scripts/animations/index.ts"
+    // ),
+    // "jsx": path.resolve(
+    //     __dirname,
+    //     "./src/general/scripts/jsx/index.ts"
+    // ),
+    // patterns_animations: path.resolve(
+    //     __dirname,
+    //     "./src/general/scripts/animations/patterns/animations.ts"
+    // ),
     settings_game: path.resolve(
         __dirname,
-        "./src/general/scripts/settings_game/index.ts"
+        "./src/general/settings_game"
+    ),
+    "@libs": path.resolve(
+        __dirname,
+        "./src/general/libs"
     ),
     "@components": path.resolve(
         __dirname,
-        "./src/app/components"
-    )
+        "./src/general/components"
+    ),
 };
 
 // main ================================================== //

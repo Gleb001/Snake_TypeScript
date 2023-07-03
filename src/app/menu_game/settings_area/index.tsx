@@ -1,6 +1,6 @@
 // imports ===================================================== //
 // libs
-import createHTMLElement from "jsx";
+import createHTMLElement from "@libs/jsx";
 // components
 import {SettingsAreaType} from "./types";
 import SettingsGame from "./settings_game";

@@ -1,5 +1,5 @@
 // imports ===================================================== //
-import { AnimationCSS, AnimationJS } from "animations";
+import { AnimationCSS, AnimationJS } from "@libs/animations";
 
 // types ======================================================= //
 interface DescriptionWindowType extends JSX.ObjectComponentHTML<

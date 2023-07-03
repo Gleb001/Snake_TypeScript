@@ -1,5 +1,5 @@
 // import ====================================================== //
-import { AnimationCSS, AnimationJS } from "animations";
+import { AnimationCSS, AnimationJS } from "@libs/animations";
 
 // types ======================================================= //
 type AnimationType = typeof AnimationCSS.prototype | typeof AnimationJS.prototype

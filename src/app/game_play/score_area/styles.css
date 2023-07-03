@@ -1,2 +1,5 @@
-#score_area { flex: 0 1 30%; }
+#score_area {
+    flex: 0 1 10%;
+    margin-right: 20px;
+}
 

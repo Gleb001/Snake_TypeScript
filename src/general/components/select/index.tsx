@@ -1,9 +1,13 @@
 // import ====================================================== //
-import createHTMLElement from "jsx";
+// libs
+import createHTMLElement from "@libs/jsx";
+// components
 import {SelectType} from "./types";
 
 // main ======================================================== //
-let Select: SelectType = ({ settings, className }) => {
+let Select: SelectType = ({
+    settings, className
+}) => {
     return (
         <select
             style="text-align: left; cursor: pointer;"

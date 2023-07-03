@@ -1,6 +1,6 @@
 // imports ===================================================== //
 // libs
-import createHTMLElement from "jsx";
+import createHTMLElement from "@libs/jsx";
 // components
 import "./styles.css"
 import {SettingSwitchesType} from "./types";

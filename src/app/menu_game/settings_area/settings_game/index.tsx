@@ -1,10 +1,9 @@
 // imports ===================================================== //
 // libs
-import GENERAL_SETTINGS_GAME from "settings_game";
 import SETTINGS_GAME from "settings_game";
-import createHTMLElement from "jsx";
-import { AnimationCSS, AnimationJS, animationExtend, animationLadder } from "animations";
-import { change_opacity } from "patterns_animations";
+import createHTMLElement from "@libs/jsx";
+import { AnimationCSS, AnimationJS, animationExtend, animationLadder } from "@libs/animations";
+import { change_opacity } from "@libs/animations/patterns";
 // components
 import "./styles.css";
 import {SettingsGameType} from "./types";
@@ -175,7 +174,7 @@ let SettingsGame: SettingsGameType = {
                         }));
                     }}
                 >
-                    <Select settings={GENERAL_SETTINGS_GAME.play_field.size_cell} />
+                    <Select settings={SETTINGS_GAME.play_field.size_cell} />
                 </SettingsGame.renderSetting>
             );
         },
@@ -207,7 +206,7 @@ let SettingsGame: SettingsGameType = {
                                     );
                                 case "main":
                                     const moving_distance = DescriptionWindow.HTML.offsetWidth + width_snake;
-                                    const speed_snake = GENERAL_SETTINGS_GAME.get("snake", "speed");
+                                    const speed_snake = SETTINGS_GAME.get("snake", "speed");
                                     const duration_moving_snake = Math.floor((moving_distance * speed_snake) / size_cell);
                                     return new AnimationCSS({
                                         changing_elements: [demonstration_snake],
@@ -239,7 +238,7 @@ let SettingsGame: SettingsGameType = {
 
                     }}
                 >
-                    <Select settings={GENERAL_SETTINGS_GAME.snake.speed} />
+                    <Select settings={SETTINGS_GAME.snake.speed} />
                 </SettingsGame.renderSetting>
             );
 
@@ -249,9 +248,9 @@ let SettingsGame: SettingsGameType = {
             let setting_input = (
                 <input
                     type="number"
-                    min={GENERAL_SETTINGS_GAME.apple.number.min}
-                    max={GENERAL_SETTINGS_GAME.apple.number.max}
-                    value={GENERAL_SETTINGS_GAME.apple.number.value}
+                    min={SETTINGS_GAME.apple.number.min}
+                    max={SETTINGS_GAME.apple.number.max}
+                    value={SETTINGS_GAME.apple.number.value}
                     onchange={function (this: HTMLInputElement) {
 
                         let max = Number(this.max);
@@ -261,7 +260,7 @@ let SettingsGame: SettingsGameType = {
                             value < min ? min :
                                 value;
 
-                        GENERAL_SETTINGS_GAME.apple.number.value = value;
+                        SETTINGS_GAME.apple.number.value = value;
                         this.value = String(value);
 
                     }}
@@ -282,13 +281,13 @@ let SettingsGame: SettingsGameType = {
                     name="Color snake"
                     className="icon-color_snake"
                     animations={function (commands) {
-                        let new_color = GENERAL_SETTINGS_GAME.get("snake", "color");
+                        let new_color = SETTINGS_GAME.get("snake", "color");
                         if (commands.indexOf("end") != -1) new_color = "#16481E";
 
                         return DescriptionWindow.animations.change_color(new_color);
                     }}
                 >
-                    <Select settings={GENERAL_SETTINGS_GAME.snake.color} />
+                    <Select settings={SETTINGS_GAME.snake.color} />
                 </SettingsGame.renderSetting>
             );
         },
@@ -297,7 +296,7 @@ let SettingsGame: SettingsGameType = {
                 <SettingsGame.renderSetting
                     name="Mode" className="icon-question"
                 >
-                    <Select settings={GENERAL_SETTINGS_GAME.play_field.modes} />
+                    <Select settings={SETTINGS_GAME.play_field.modes} />
                 </SettingsGame.renderSetting>
             );
         },

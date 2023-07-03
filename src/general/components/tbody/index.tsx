@@ -1,13 +1,15 @@
 // import ====================================================== //
-import createHTMLElement from "jsx";
+// libs
+import createHTMLElement from "@libs/jsx";
+// components
 import {TbodyType} from "./types";
 
 // main ======================================================== //
-let Tbody: TbodyType = ({size_cell, number_rows, number_columns}) => {
-
+let Tbody: TbodyType = ({
+    size_cell, number_rows, number_columns
+}) => {
     let rows = new Array(number_rows).fill(0);
     let columns = new Array(number_columns).fill(0);
-
     return (
         <tbody>{
             rows.map(row => (
@@ -22,7 +24,6 @@ let Tbody: TbodyType = ({size_cell, number_rows, number_columns}) => {
             ))
         }</tbody>
     );
-
 };
 
 // export ====================================================== //
