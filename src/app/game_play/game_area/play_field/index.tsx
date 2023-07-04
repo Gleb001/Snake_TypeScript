@@ -44,7 +44,6 @@ let PlayField: PlayFieldType = {
 
         let cells = Array.from(this.HTML.querySelectorAll("td"));
         let cell = null;
-        console.log(cell);
 
         let number_cells = cells.length;
         while (number_cells && !cell) {
