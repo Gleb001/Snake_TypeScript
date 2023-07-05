@@ -138,16 +138,16 @@ window.addEventListener("keydown", (event) => {
 
     let data_motion_vector: [CoordinateType, ShiftNumberType];
     switch (event.key) {
-        case "ArrowUp": case "w":
+        case "ArrowUp": case "w": case "2":
             data_motion_vector = ["y", -1];
             break;
-        case "ArrowDown": case "s":
+        case "ArrowDown": case "s": case "8":
             data_motion_vector = ["y", 1];
             break;
-        case "ArrowRight": case "d":
+        case "ArrowRight": case "d": case "6":
             data_motion_vector = ["x", 1];
             break;
-        case "ArrowLeft": case "a":
+        case "ArrowLeft": case "a": case "4":
             data_motion_vector = ["x", -1];
             break;
         default: return;
